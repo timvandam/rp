@@ -1,0 +1,26 @@
+{
+  "name": "rp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "process-ts": "ts-node preprocessing/process-ts.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timvandam/rp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timvandam/rp/issues"
+  },
+  "homepage": "https://github.com/timvandam/rp#readme",
+  "devDependencies": {
+    "@types/node": "^17.0.31",
+    "ts-node": "^10.7.0"
+  },
+  "dependencies": {
+    "ts-morph": "^14.0.0"
+  }
+}
