@@ -1,31 +1,21 @@
+import { isMainThread, workerData } from 'worker_threads'
 import { readFile, writeFile, opendir, mkdir } from 'fs/promises'
 import { createHash } from 'crypto'
 import { Project, ScriptTarget } from 'ts-morph'
+import { REPOS_FOLDER, RESULT_FOLDER } from './master'
 import * as path from 'path'
 
-//TODO: Parralellization to speed it up
-//TODO: Progress bar
-
-// amount of files to process at one time
-const BATCH_SIZE = 10
-const REPO_FOLDER = './data/Repos'
-const RESULT_FOLDER = './data/Processed'
-
-const IGNORED_FOLDERS = ['.git', 'node_modules', '.idea', '.vscode', '.circleci']
-
-const sha256 = (str: string) => createHash('sha256').update(str).digest().toString('hex')
-
-exploreFolder(REPO_FOLDER + '/0xProject')
+if (!isMainThread) exploreFolder(workerData)
 
 async function exploreFolder(folderPath: string): Promise<void> {
 	const dir = await opendir(folderPath)
 	const promises = []
-	
+
 	for await (const file of dir) {
 		if (file.isFile()) {
 			const fileName = file.name.toLowerCase()
 			if (fileName.endsWith('.ts') && !fileName.endsWith('.d.ts')) promises.push(handleTSFile(path.resolve(folderPath, file.name)))
-		} else if (file.isDirectory() && !IGNORED_FOLDERS.includes(file.name.toLowerCase())) {
+		} else if (file.isDirectory()) {
 			promises.push(exploreFolder(path.resolve(folderPath, file.name)))
 		}
 	}
@@ -33,9 +23,11 @@ async function exploreFolder(folderPath: string): Promise<void> {
 	await Promise.all(promises)
 }
 
+const sha256 = (str: string) => createHash('sha256').update(str).digest().toString('hex')
+
 async function handleTSFile(filePath: string) {
 	const dirPath = path.dirname(filePath)
-	const relDirPath = path.relative(REPO_FOLDER, dirPath)
+	const relDirPath = path.relative(REPOS_FOLDER, dirPath)
 	const outDirPath = path.resolve(RESULT_FOLDER, relDirPath)
 
 	const fileName = path.basename(filePath, '.ts')
