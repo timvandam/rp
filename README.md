@@ -1,6 +1,7 @@
 # rp
 
-Fetching data:
+## Fetching & preprocessing data:
+This will take a while0
 ```bash
 git clone git@github.com:timvandam/rp.git
 # ↓ this clones ~50gb of typescript repos ↓ 

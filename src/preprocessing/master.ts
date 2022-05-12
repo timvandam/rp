@@ -1,15 +1,22 @@
 import { opendir, access} from 'fs/promises'
-import { Worker, isMainThread } from 'worker_threads'
+import cluster from 'cluster'
 import * as path from 'path'
 import { cpus } from 'os'
 import { SingleBar } from 'cli-progress'
+import { exploreFolder } from './worker'
 
 export const REPOS_FOLDER = './data/Repos'
 export const RESULT_FOLDER = './data/Processed'
 
-if (isMainThread) process()
+if (cluster.isPrimary) {
+	preprocess()
+} else {
+	const folder = process.env.REPO_FOLDER
+	if (typeof folder !== 'string') throw new Error(`Invalid folder '${folder}'`)
+	exploreFolder(folder).then(() => process.exit(0))
+}
 
-async function process() {
+async function preprocess() {
 	const folders = await getAllRepos()
 
 	const progressBar = new SingleBar({})
@@ -21,12 +28,12 @@ async function process() {
 		const folderName = path.basename(folderPath)
 
 		if (await folderExists(path.resolve(RESULT_FOLDER, folderName))) {
-			progressBar.increment()
+			progressBar.setTotal(progressBar.getTotal() - 1)
 			createWorker()
 			return
 		}
 
-		const worker = new Worker(path.resolve(__dirname, 'worker.js'), { workerData: folderPath })
+		const worker = cluster.fork({ REPO_FOLDER: folderPath })
 
 		worker.on('error', error => {
 			console.log(`Something went wrong with folder '${folderPath}': ${error.message}`)
