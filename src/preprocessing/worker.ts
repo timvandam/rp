@@ -3,6 +3,7 @@ import { createHash } from 'crypto'
 import { Project, ScriptTarget } from 'ts-morph'
 import { REPOS_FOLDER, RESULT_FOLDER } from './master'
 import * as path from 'path'
+import {setTimeout} from 'timers/promises'
 
 export async function exploreFolder(folderPath: string): Promise<void> {
 	const dir = await opendir(folderPath)
