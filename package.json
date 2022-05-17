@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "process-ts": "tsc -b && node ./dist/preprocessing/master.js"
+    "preprocess": "tsc -b && node ./dist/preprocessing/master.js",
+    "mask": "tsc -b && node ./dist/masking/master.js"
   },
   "repository": {
     "type": "git",

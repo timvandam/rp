@@ -1,36 +1,21 @@
 import { readFile, writeFile, opendir, mkdir } from 'fs/promises'
 import { createHash } from 'crypto'
 import { Project, ScriptTarget } from 'ts-morph'
-import { REPOS_FOLDER, RESULT_FOLDER } from './master'
 import * as path from 'path'
-import {setTimeout} from 'timers/promises'
+import { exploreFolder } from "../file-utils";
+import {REPOS_FOLDER, PREPROCESSED_FOLDER} from "../config";
 
-export async function exploreFolder(folderPath: string): Promise<void> {
-	const dir = await opendir(folderPath)
-	const promises = []
-
-	for await (const file of dir) {
-		if (file.isFile()) {
-			const fileName = file.name.toLowerCase()
-			if (fileName.endsWith('.ts')) promises.push(handleTSFile(path.resolve(folderPath, file.name)))
-		} else if (file.isDirectory()) {
-			promises.push(exploreFolder(path.resolve(folderPath, file.name)))
-		}
-	}
-
-	await Promise.all(promises)
+export function preprocess(folderPath: string): Promise<void> {
+	return exploreFolder(folderPath, handleTSFile, (filePath: string) => filePath.endsWith('.ts'))
 }
 
 const sha256 = (str: string) => createHash('sha256').update(str).digest().toString('hex')
 
-async function handleTSFile(filePath: string) {
+async function handleTSFile(code: string, filePath: string) {
 	const dirPath = path.dirname(filePath)
 	const relDirPath = path.relative(REPOS_FOLDER, dirPath)
-	const outDirPath = path.resolve(RESULT_FOLDER, relDirPath)
-
+	const outDirPath = path.resolve(PREPROCESSED_FOLDER, relDirPath)
 	const fileName = path.basename(filePath, '.ts')
-
-	const code = await readFile(filePath, 'utf8')
 
 	const promises = []
 

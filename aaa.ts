@@ -1,4 +1,3 @@
-import { Node, Project, SyntaxKind, ts } from 'ts-morph'
 
 // const sf = tsc.createSourceFile('x.temp', readFileSync('./test2.ts', 'utf8'), ScriptTarget.ESNext, true)
 //
@@ -34,8 +33,12 @@ import { Node, Project, SyntaxKind, ts } from 'ts-morph'
 // console.log(printer.printFile(sf))
 // console.log('---------------------')
 
-const p = new Project({ compilerOptions: { removeComments: false } })
-const psf = p.createSourceFile('x.ts', `const x: number = 5 * 9;`)
+
+import {Node, Project, ScriptTarget, SyntaxKind, ts} from 'ts-morph'
+import {readFileSync} from "fs";
+
+const p = new Project({ compilerOptions: { removeComments: false, target: ScriptTarget.ESNext } })
+const psf = p.createSourceFile('x.ts', readFileSync('./test2.ts', 'utf8'))
 
 function transformRecursively(node: Node, fn: (node: Node) => void): void {
 	fn(node)
@@ -56,6 +59,7 @@ const x = psf.transform(traversal => {
 })
 console.log(x.print({removeComments:false})) // no comments!
 console.log(psf.print({removeComments:false})) // no comments!
+console.log(psf.getEmitOutput().getOutputFiles()[0].getText())
 
 
 /*

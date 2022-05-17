@@ -1,34 +1,23 @@
+// This file is no longer relevant since the task has been switched to statement prediction instead of single token prediction
 import * as tsc from 'typescript'
-import { Node, ScriptTarget, SyntaxKind } from 'typescript'
-
-// n is 0 indexed
-function replaceNthOccurrence(str: string, keyword: string, n: number, replacement: string = ''): string {
-	let i = 0
-	return str.replace(new RegExp(keyword, 'g'), match => i++ === n ? replacement : match)
-}
-
-function reduceNode<T>(node: Node, fn: (acc: T, node: Node) => T, initial: T): T {
-	let cur = fn(initial, node)
-	node.forEachChild(child => {
-		cur = reduceNode(child, fn, cur)
-	})
-	return cur
-}
+import {ScriptTarget, SyntaxKind} from 'typescript'
+import {reduceNode} from "../ast-utils";
 
 export function maskSingleToken(code: string): { ts: string; js: string; } {
 	const sourceFile = tsc.createSourceFile('temp.ts', code, ScriptTarget.ESNext, true)
-	const [fn] = sourceFile.statements.filter(tsc.isFunctionDeclaration)
+	const fn = sourceFile.statements.find(tsc.isFunctionDeclaration)
 
-	const body = fn.body
-	if (body === undefined) throw new Error('No function body available')
+	if (fn === undefined) throw new Error('No function available')
+	if (fn.body === undefined) throw new Error('No function body available')
 
 	// TODO: Not just leafs
-	const leafCount = reduceNode(body, (t, n) => t + (n.getChildCount() === 0 ? 1 : 0), 0)
+	const leafCount = reduceNode(fn.body, (t, n) => t + (n.getChildCount() === 0 ? 1 : 0), 0)
 	const leafToMask = Math.floor(Math.random() * leafCount)
 	//TODO: Dont mask variable names, object keys, etc
 	//TODO: Exit sooner
 	// TODO: Allow operator masking
-	reduceNode(body, (r, n) => {
+	//		- Maybe wrap in NodeObject
+	reduceNode(fn.body, (r, n) => {
 		if (n.getChildCount() !== 0) return r
 		if (r === 0) {
 			// We are at the token that will be masked
@@ -38,9 +27,11 @@ export function maskSingleToken(code: string): { ts: string; js: string; } {
 		return r - 1
 	}, leafToMask)
 
+	const tsOutput = tsc.createPrinter({ removeComments: false }).printFile(sourceFile)
+	const jsOutput = tsc.transpileModule(tsOutput, { compilerOptions: { removeComments: false, target: ScriptTarget.ESNext } }).outputText
 	return {
-		ts: tsc.createPrinter({ removeComments: false }).printFile(sourceFile),
-		js: 'asd' // TODO
+		ts: tsOutput,
+		js: jsOutput
 	}
 }
 
@@ -53,7 +44,7 @@ const res = maskSingleToken(`/**
  * @returns {CacheableGroup | undefined}
  */
 export function cacheableGroupFactory(group: Group): CacheableGroup | undefined {
-    const now = new Date().getTime();
+    const now = new Date().getTime() * 123;
     if (group) {
         return { group, timestamp: now };
     }

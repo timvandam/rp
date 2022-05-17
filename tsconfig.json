@@ -8,6 +8,8 @@
     "skipLibCheck": true,                                /* Skip type checking all .d.ts files. */
     "rootDir": "./src",
     "outDir": "./dist",
-    "allowJs": true
-  }
+    "allowJs": true,
+    "sourceMap": true
+  },
+  "include": ["./src"]
 }

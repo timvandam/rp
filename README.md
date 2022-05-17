@@ -1,38 +1,21 @@
 # rp
 
 ## Fetching & preprocessing data:
-This will take a while0
+This will take a while
 ```bash
 git clone git@github.com:timvandam/rp.git
 # ↓ this clones ~50gb of typescript repos ↓ 
 cd data && chmod +x ./cloner.sh && ./cloner.sh && cd ..
-npm run process-ts # get all TS functions&methods, and JS equivalents
+npm run preprocess # get all TS functions&methods, and JS equivalents
+npm run mask # masks TS & JS functions
 npm run evaluate # TODO
 ```
 
 ## Preprocessing output
-Preprocessing outputs one file for each function.
-This file contains both the TS and the JS equivalent, and is stored as follows:
-```ts
-/* <TS> */
-/**
- * comments are preserved
- * @param input
- */
-function abc(input: string): string {
-	return input
-}
-/* </TS> */
-
-/* <JS> */
-/**
- * comments are preserved
- * @param input
- */
-function abc(input) {
-	return input
-}
-/* </JS> */
-```
-The first function is the TS function, and the second function is the JS equivalent.
+Preprocessing outputs one file for each function and method.
+This file contains the TS function including any leading JSDocs if present.
 The file name is always `[fileName].[functionName].[hash].preprocessed`.
+
+## Mask output
+Masking output is always a json object: `{ jsMasked, tsMasked, jsTruth, tsTruth }`
+Mask is masked code, and truth is what statement was originally in place of the mask
