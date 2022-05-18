@@ -10,45 +10,55 @@ type InnerResult = {
 	n: number;
 	rouge: {
 		n: number;
-		l: {
-			recall: number;
-			precision: number;
-			f1: number;
-		}
-		s: number;
-	}
+		l: RougeResult;
+		s: RougeResult;
+	};
+	exactMatch: number;
+	levenshtein: number;
+}
+
+type RougeResult = {
+	recall: number;
+	precision: number;
+	f: number;
 }
 
 const mergeAverages = (avg1: number, n1: number, avg2: number, n2: number) => (avg1 * n1 + avg2 * n2) / (n1 + n2)
 
+const rougeResultAggregator: (resultN: number, aggregateN: number) => DataAggregator<RougeResult, RougeResult> = (resultN, aggregateN) => (result, aggregate) => ({
+	recall: mergeAverages(result.recall, resultN, aggregate.recall, aggregateN),
+	precision: mergeAverages(result.precision, resultN, aggregate.precision, aggregateN),
+	f: mergeAverages(result.f, resultN, aggregate.f, aggregateN)
+})
 const innerResultAggregator: DataAggregator<InnerResult, InnerResult> = (result, aggregate) => ({
 	n: result.n + aggregate.n,
 	rouge: {
 		n: mergeAverages(result.rouge.n, result.n, aggregate.rouge.n, aggregate.n),
-		l: {
-			recall: mergeAverages(result.rouge.l.recall, result.n, aggregate.rouge.l.recall, aggregate.n),
-			precision: mergeAverages(result.rouge.l.precision, result.n, aggregate.rouge.l.precision, aggregate.n),
-			f1: mergeAverages(result.rouge.l.f1, result.n, aggregate.rouge.l.f1, aggregate.n)
-		},
-		s: mergeAverages(result.rouge.s, result.n, aggregate.rouge.s, aggregate.n),
-	}
+		l: rougeResultAggregator(result.n, aggregate.n)(result.rouge.l, aggregate.rouge.l),
+		s: rougeResultAggregator(result.n, aggregate.n)(result.rouge.s, aggregate.rouge.s),
+	},
+	exactMatch: mergeAverages(result.exactMatch, result.n, aggregate.exactMatch, aggregate.n),
+	levenshtein: mergeAverages(result.levenshtein, result.n, aggregate.levenshtein, aggregate.n)
 })
 const resultAggregator: DataAggregator<Result, Result> = (result, aggregate) => ({
 	js: innerResultAggregator(result.js, aggregate.js),
 	ts: innerResultAggregator(result.ts, aggregate.ts)
 })
 
+const initialRougeResult: () => RougeResult = () => ({
+	recall: 0,
+	precision: 0,
+	f: 0,
+})
 const initialInnerResult: () => InnerResult = () => ({
 	n: 0,
 	rouge: {
 		n: 0,
-		l: {
-			recall: 0,
-			precision: 0,
-			f1: 0,
-		},
-		s: 0
-	}
+		l: initialRougeResult(),
+		s: initialRougeResult()
+	},
+	exactMatch: 0,
+	levenshtein: 0,
 })
 
 const initialResult: Result = { js: initialInnerResult(), ts: initialInnerResult() }
@@ -63,7 +73,6 @@ async function evaluate() {
 		os.cpus().length
 	)
 	await writeFile('./data/Evaluation.json', JSON.stringify(result, null, 2))
-	process.exit(0)
 }
 
 evaluate()

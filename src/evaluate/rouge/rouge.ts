@@ -36,9 +36,9 @@ export function n(
   cand: string,
   ref: string,
   opts?: {
-    n: number,
-    nGram: ((tokens: Array<string>, n: number) => Array<string>),
-    tokenizer: ((input: string) => Array<string>)
+    n?: number,
+    nGram?: ((tokens: Array<string>, n: number) => Array<string>),
+    tokenizer?: ((input: string) => Array<string>)
   }
 ): number {
   if (cand.length === 0) throw new RangeError('Candidate cannot be an empty string');
@@ -51,8 +51,8 @@ export function n(
     tokenizer: utils.treeBankTokenize,
   }, opts);
 
-  const candGrams = opts.nGram(opts.tokenizer(cand), opts.n);
-  const refGrams = opts.nGram(opts.tokenizer(ref), opts.n);
+  const candGrams = opts.nGram!(opts.tokenizer!(cand), opts.n!);
+  const refGrams = opts.nGram!(opts.tokenizer!(ref), opts.n!);
 
   const match = utils.intersection(candGrams, refGrams);
   return match.length / refGrams.length;
@@ -84,11 +84,11 @@ export function s(
   cand: string,
   ref: string,
   opts?: {
-    beta: number,
-    skipBigram: ((tokens: Array<string>) => Array<string>),
-    tokenizer: ((input: string) => Array<string>)
+    beta?: number,
+    skipBigram?: ((tokens: Array<string>) => Array<string>),
+    tokenizer?: ((input: string) => Array<string>)
   }
-): number {
+): { recall: number; precision: number; f: number } {
   if (cand.length === 0) throw new RangeError('Candidate cannot be an empty string');
   if (ref.length === 0) throw new RangeError('Reference cannot be an empty string');
 
@@ -99,18 +99,26 @@ export function s(
     tokenizer: utils.treeBankTokenize,
   }, opts);
 
-  const candGrams = opts.skipBigram(opts.tokenizer(cand));
-  const refGrams = opts.skipBigram(opts.tokenizer(ref));
+  const candGrams = opts.skipBigram!(opts.tokenizer!(cand));
+  const refGrams = opts.skipBigram!(opts.tokenizer!(ref));
 
   const skip2 = utils.intersection(candGrams, refGrams).length;
 
   if (skip2 === 0) {
-    return 0;
+    return {
+      precision: 0,
+      recall: 0,
+      f: 0
+    };
   } else {
     const skip2Recall = skip2 / refGrams.length;
     const skip2Prec = skip2 / candGrams.length;
 
-    return utils.fMeasure(skip2Prec, skip2Recall, opts.beta);
+    return {
+      recall: skip2Recall,
+      precision: skip2Prec,
+      f: utils.fMeasure(skip2Prec, skip2Recall, opts.beta)
+    }
   }
 }
 

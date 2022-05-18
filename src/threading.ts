@@ -71,7 +71,10 @@ export async function multithread<T, R, A>(jobs: T[], workerFilePath: string, da
         })
     }
 
+
     await Promise.all(Array.from({ length: maxWorkers }, (_, i) => createWorker(i)))
+
+    bar.stop()
 
     return aggregate
 }
