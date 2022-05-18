@@ -8,8 +8,8 @@ git clone git@github.com:timvandam/rp.git
 cd data && chmod +x ./cloner.sh && ./cloner.sh && cd ..
 npm run preprocess # get all TS functions&methods, and JS equivalents
 npm run mask # masks TS & JS functions
-npm run predict-mask # applies UniXCoder and outputs results
-npm run evaluate # TODO: runs metrics
+python py/predict_masks # applies UniXCoder and outputs results
+npm run evaluate # runs metrics and reports them
 ```
 
 ## Preprocessing output

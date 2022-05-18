@@ -1,6 +1,5 @@
 import {access, opendir, readFile} from "fs/promises";
 import path from "path";
-import {PREPROCESSED_FOLDER, REPOS_FOLDER} from "./config";
 
 /**
  * Explores folders recursively and calls a handler on specific files
