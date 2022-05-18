@@ -36,11 +36,11 @@ async function startWorkers() {
 
 		const worker = cluster.fork({ REPO_FOLDER: folderPath })
 
-		worker.on('error', error => {
+		worker.once('error', error => {
 			console.log(`Something went wrong with folder '${folderPath}': ${error.message}`)
 		})
 
-		worker.on('exit', () => {
+		worker.once('exit', () => {
 			// Create a new worker to handle the next folder
 			progressBar.increment()
 			createWorker()

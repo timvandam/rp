@@ -57,7 +57,7 @@ total_folders = len(masked_folders)
 processed_folders = 0
 print(f"Found {total_folders} folders")
 
-max_workers = 3
+max_workers = 2
 print("Spawning at most " + str(max_workers) + " threads")
 
 batch_size = 3
