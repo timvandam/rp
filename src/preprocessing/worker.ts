@@ -1,13 +1,22 @@
-import { readFile, writeFile, opendir, mkdir } from 'fs/promises'
+import { writeFile, mkdir } from 'fs/promises'
 import { createHash } from 'crypto'
 import { Project, ScriptTarget } from 'ts-morph'
 import * as path from 'path'
 import { exploreFolder } from "../file-utils";
 import {REPOS_FOLDER, PREPROCESSED_FOLDER} from "../config";
+import { workerData } from 'worker_threads'
+import { reportProgress, reportTotal } from '../threading'
 
-export function preprocess(folderPath: string): Promise<void> {
-	return exploreFolder(folderPath, handleTSFile, (filePath: string) => filePath.endsWith('.ts'))
+async function preprocess(): Promise<void> {
+	const folders = workerData as string[]
+	reportTotal(folders.length)
+	for (const folder of folders) {
+		exploreFolder(folder, handleTSFile, (filePath: string) => filePath.endsWith('.ts'))
+		reportProgress('increment')
+	}
 }
+
+preprocess()
 
 const sha256 = (str: string) => createHash('sha256').update(str).digest().toString('hex')
 

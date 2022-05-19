@@ -1,10 +1,10 @@
 import { getFolderPaths } from '../file-utils'
 import { PREDICTED_FOLDER } from '../config'
-import { batchAggregator, DataAggregator, multithread } from '../threading'
+import { DataAggregator, multithread } from '../threading'
 import * as os from 'os'
 import { writeFile } from 'fs/promises'
 import * as path from 'path'
-import { batchByAmount, batchBySize } from '../utils'
+import { batchBySize } from '../utils'
 
 export type Result = { js: InnerResult, ts: InnerResult }
 type InnerResult = {
