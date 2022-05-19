@@ -14,7 +14,7 @@ export async function exploreFolder(folderPath: string, handler: (fileContent: s
     for await (const file of dir) {
         const filePath = path.resolve(folderPath, file.name)
         if (file.isFile()) {
-            if (filter(filePath)) promises.push(readFile(filePath, 'utf8').then(fileContent => handler(fileContent, filePath)))
+            if (filter(filePath)) await readFile(filePath, 'utf8').then(fileContent => handler(fileContent, filePath))
         } else if (file.isDirectory()) {
             promises.push(exploreFolder(filePath, handler, filter))
         }

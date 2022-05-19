@@ -6,6 +6,7 @@
   "scripts": {
     "preprocess": "tsc -b && node ./dist/preprocessing/master.js",
     "mask": "tsc -b && node ./dist/masking/master.js",
+    "predict": "python py/predict_masks.py",
     "evaluate": "tsc -b && node ./dist/evaluate/master.js"
   },
   "repository": {

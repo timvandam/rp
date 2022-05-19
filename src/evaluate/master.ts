@@ -1,9 +1,10 @@
 import { getFolderPaths } from '../file-utils'
 import { PREDICTED_FOLDER } from '../config'
-import { DataAggregator, multithread } from '../threading'
+import { batchAggregator, DataAggregator, multithread } from '../threading'
 import * as os from 'os'
 import { writeFile } from 'fs/promises'
 import * as path from 'path'
+import { batchByAmount, batchBySize } from '../utils'
 
 export type Result = { js: InnerResult, ts: InnerResult }
 type InnerResult = {
@@ -14,6 +15,7 @@ type InnerResult = {
 		s: RougeResult;
 	};
 	exactMatch: number;
+	exactMatchAll: number; // top-N (N = len(predictions))
 	levenshtein: number;
 }
 
@@ -38,6 +40,7 @@ const innerResultAggregator: DataAggregator<InnerResult, InnerResult> = (result,
 		s: rougeResultAggregator(result.n, aggregate.n)(result.rouge.s, aggregate.rouge.s),
 	},
 	exactMatch: mergeAverages(result.exactMatch, result.n, aggregate.exactMatch, aggregate.n),
+	exactMatchAll: mergeAverages(result.exactMatchAll, result.n, aggregate.exactMatchAll, aggregate.n),
 	levenshtein: mergeAverages(result.levenshtein, result.n, aggregate.levenshtein, aggregate.n)
 })
 const resultAggregator: DataAggregator<Result, Result> = (result, aggregate) => ({
@@ -58,6 +61,7 @@ const initialInnerResult: () => InnerResult = () => ({
 		s: initialRougeResult()
 	},
 	exactMatch: 0,
+	exactMatchAll: 0,
 	levenshtein: 0,
 })
 
@@ -66,7 +70,7 @@ const initialResult: Result = { js: initialInnerResult(), ts: initialInnerResult
 async function evaluate() {
 	const folders = await getFolderPaths(PREDICTED_FOLDER)
 	const result = await multithread(
-		folders,
+		batchBySize(folders, 5),
 		path.resolve(__dirname, './worker.js'),
 		resultAggregator,
 		initialResult,

@@ -20,7 +20,7 @@ async function handleTSFile(code: string, filePath: string) {
 	const promises = []
 
 	await mkdir(outDirPath, { recursive: true })
-	for (const { name, code: tsCode } of await getTSFunctionsAndMethods(code)) {
+	for (const { name, code: tsCode } of getTSFunctionsAndMethods(code)) {
 		const outFileName = `${fileName}.${name}.${sha256(tsCode).slice(0, 10)}.preprocessed`
 		const outFilePath = path.resolve(outDirPath, outFileName)
 		promises.push(writeFile(outFilePath, tsCode))
@@ -29,31 +29,9 @@ async function handleTSFile(code: string, filePath: string) {
 	await Promise.all(promises)
 }
 
-export async function getTSFunctionsAndMethods(code: string): Promise<{ name: string, code: string }[]> {
+export function getTSFunctionsAndMethods(code: string): { name: string, code: string }[] {
 	const project = new Project({ compilerOptions: { target: ScriptTarget.ESNext }})
 	const sourceFile = project.createSourceFile('temp.ts', code)
-
-	// add all methods as functions so they are also considered
-	for (const method of sourceFile.getClasses().flatMap(clazz => clazz.getMethods())) {
-		sourceFile.addFunction({
-			isAsync: method.isAsync(),
-			name: method.getName(),
-			isGenerator: method.isGenerator(),
-			parameters: method.getParameters().map(param => param.getStructure()),
-			typeParameters: method.getTypeParameters().map(param => param.getStructure()),
-			statements: method.getStatements().map(statement => statement.getText()),
-			returnType: method.getReturnTypeNode()?.getText(),
-			overloads: method.getOverloads().map(overload => ({
-				isAsync: overload.isAsync(),
-				name: overload.getName(),
-				isGenerator: overload.isGenerator(),
-				parameters: overload.getParameters().map(param => param.getStructure()),
-				typeParameters: overload.getTypeParameters().map(param => param.getStructure()),
-				statements: overload.getStatements().map(statement => statement.getText()),
-				returnType: overload.getReturnTypeNode()?.getText(),
-			})),
-		})
-	}
 
 	return sourceFile.getFunctions().map(fn => {
 		const code = fn.print().trim()

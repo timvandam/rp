@@ -1,11 +1,10 @@
-import { opendir, access} from 'fs/promises'
 import cluster from 'cluster'
 import * as path from 'path'
 import { cpus } from 'os'
 import { SingleBar } from 'cli-progress'
 import { preprocess } from './worker'
-import {REPOS_FOLDER, PREPROCESSED_FOLDER} from "../config";
-import {folderExists, getFolderPaths} from "../file-utils";
+import { REPOS_FOLDER, PREPROCESSED_FOLDER } from "../config";
+import { folderExists, getFolderPaths } from "../file-utils";
 
 if (cluster.isPrimary) {
 	startWorkers()

@@ -8,11 +8,11 @@ function report(name: string, value: unknown) {
         throw new Error('No parent port. Is this a worker?')
     }
 
-    threads.parentPort!.postMessage(JSON.stringify({ [name]: value }))
+    threads.parentPort!.postMessage({ [name]: value })
 }
 
 export const reportTotal = (total: number) => report('total', total)
-export const reportProgress = (progress: number | string) => report('progress', progress)
+export const reportProgress = (progress: number | 'increment') => report('progress', progress)
 export function reportResult<R>(result: R) {
     return report('result', result)
 }
@@ -23,8 +23,8 @@ export async function multithread<T, R, A>(jobs: T[], workerFilePath: string, da
     const bar = new MultiBar({
         format: '{filename}\t| {bar} | {percentage} %\t| {value} / {total}'
     }, Presets.shades_grey)
-    const bars = workers.map((_, i) => bar.create(0, 0, { filename: `T${i}\t` }))
-    const jobsBar = bar.create(jobs.length, 0, { filename: 'Jobs\t' })
+    const bars = workers.map((_, i) => bar.create(0, 0, { filename: `T${i}` }))
+    const jobsBar = bar.create(jobs.length, 0, { filename: 'Jobs' })
     let aggregate = initialDataAggregate
 
     function createWorker(index: number): Promise<void> {
@@ -42,29 +42,25 @@ export async function multithread<T, R, A>(jobs: T[], workerFilePath: string, da
                 console.log(`An error occurred in thread ${index}: ${error}`)
             })
 
-            worker.on('message', message => {
-                try {
-                    const data = JSON.parse(message)
-                    if ('total' in data && typeof data['total'] === 'number') {
-                        bars[index].setTotal(data['total'])
+            worker.on('message', data => {
+                if ('total' in data && typeof data['total'] === 'number') {
+                    bars[index].setTotal(data['total'])
+                }
+                if ('progress' in data) {
+                    if (typeof data['progress'] === 'number') {
+                        bars[index].update(data['progress'])
+                    } else if (data['progress'] === 'increment') {
+                        bars[index].increment()
                     }
-                    if ('progress' in data) {
-                        if (typeof data['progress'] === 'number') {
-                            bars[index].update(data['progress'])
-                        } else if (data['progress'] === 'increment') {
-                            bars[index].increment()
-                        }
-                    }
-                    if ('result' in data) {
-                        aggregate = dataAggregator(data['result'], aggregate)
-                    }
-                } catch (e) {
-                    console.log(`Invalid message from thread ${index}: ${message}`)
+                }
+                if ('result' in data) {
+                    aggregate = dataAggregator(data['result'], aggregate)
                 }
             })
 
             worker.once('exit', () => {
                 worker.removeAllListeners()
+                bars[index].update(0)
                 jobsBar.increment()
                 createWorker(index).then(() => resolve())
             })
@@ -80,3 +76,11 @@ export async function multithread<T, R, A>(jobs: T[], workerFilePath: string, da
 }
 
 export const arrayAggregator: [DataAggregator<unknown, unknown[]>, []] = [(result, aggregate) => [...aggregate, result], []]
+
+/**
+ * Aggregator that wraps around individual aggregators in order to handle arrays.
+ * Use this if progress is reported on many jobs at once (in one array).
+ */
+export function batchAggregator<T, R>(dataAggregator: DataAggregator<T, R>): DataAggregator<T[], R> {
+    return (result, aggregate) => result.reduce((ag, res) => dataAggregator(res, ag), aggregate)
+}
