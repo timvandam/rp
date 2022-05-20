@@ -14,8 +14,10 @@ import math
 import Levenshtein as Levenshtein
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 from nltk.translate.meteor_score import meteor_score
+import nltk
 from rouge_score import rouge_scorer
-
+from js_tokenize import tokenize
+from blue import compute_bleu
 
 with open('./config.json') as f:
     config = json.loads(f.read())
@@ -41,9 +43,19 @@ def average_evaluation(evaluation):
     evaluation["meteor"] /= evaluation["n"]
     evaluation["bleu"] /= evaluation["n"]
     evaluation["levenshtein"] /= evaluation["n"]
-    evaluation["rouge"].precision /= evaluation["n"]
-    evaluation["rouge"].recall /= evaluation["n"]
-    evaluation["rouge"].f1 /= evaluation["n"]
+    evaluation["rouge"]["precision"] /= evaluation["n"]
+    evaluation["rouge"]["recall"] /= evaluation["n"]
+    evaluation["rouge"]["f1"] /= evaluation["n"]
+
+
+def update_evaluation(evaluation, meteor, bleu, levenshtein, rouge):
+    evaluation["levenshtein"] += levenshtein
+    evaluation["bleu"] += bleu
+    evaluation["rouge"]["f1"] += rouge["f1"]
+    evaluation["rouge"]["precision"] += rouge["precision"]
+    evaluation["rouge"]["recall"] += rouge["recall"]
+    evaluation["meteor"] += meteor
+    evaluation["n"] += 1
 
 
 def compute_rouge(line: str, completion: str):
@@ -57,26 +69,8 @@ def compute_rouge(line: str, completion: str):
         "f1": score.fmeasure
     }
 
-
-fix_tokens = {
-    tokenize.DEDENT: "DEDENT",
-    tokenize.INDENT: "INDENT",
-    tokenize.ENDMARKER: "ENDMARKER",
-    tokenize.NEWLINE: "NEWLINE",
-    tokenize.ENCODING: "",
-}
-
-
 def tokenize_code(code):
-    tokens = []
-    for token in tokenize.tokenize(BytesIO(code.encode('utf-8')).readline):
-        if token.type in fix_tokens:
-            fixed_token = fix_tokens[token.type]
-            if fixed_token != "":
-                tokens.append(fixed_token)
-        else:
-            tokens.append(token.string)
-    return tokens, " ".join(tokens)
+    return [t.value for t in tokenize(code)]
 
 
 def evaluate_folder(folder_path: str):
@@ -90,29 +84,39 @@ def evaluate_folder(folder_path: str):
                 txt = f_in.read()
                 data = json.loads(txt)
             print("Read file " + root + "/" + file)
-                
-            ts_predictions = data["tsPredictions"]
-            ts_truth = data["tsTruth"]
-            ts_token_prediction, ts_token_prediction_str = tokenize_code(ts_predictions[0])
-            ts_token_truth, ts_token_truth_str = tokenize_code(ts_truth)
+
 
             js_predictions = data["jsPredictions"]
             js_truth = data["jsTruth"]
-            js_token_prediction, js_token_prediction_str = tokenize_code(js_predictions[0])
-            js_token_truth, js_token_truth_str = tokenize_code(js_truth)
+            print("Tokenizing js")
+            # js_token_prediction = tokenize_code(js_predictions[0])
+            # js_token_truth = tokenize_code(js_truth)
 
-            evaluation_js["levenshtein"] = Levenshtein.ratio(js_truth, js_predictions[0])
-            evaluation_js["bleu"] = sentence_bleu([js_token_truth], js_token_prediction, smoothing_function=SmoothingFunction().method2)
-            evaluation_js["rouge"] = compute_rouge(js_token_truth_str, js_token_prediction_str)
-            evaluation_js["meteor"] = meteor_score(references=[js_token_truth], hypothesis=js_token_prediction)
-            evaluation_js["n"] += 1
+            update_evaluation(
+                evaluation_js,
+                1, #meteor_score(references=[js_token_truth], hypothesis=js_token_prediction),
+                compute_bleu(js_truth, js_predictions[0])[0], #sentence_bleu([js_token_truth], js_token_prediction, smoothing_function=SmoothingFunction().method2),
+                Levenshtein.ratio(js_truth, js_predictions[0]),
+                {"f1":1,"precision":1,"recall":1}# compute_rouge(" ".join(js_token_truth), " ".join(js_token_prediction))
+            )
+                
+            print(evaluation_js)
 
-            evaluation_ts["levenshtein"] = Levenshtein.ratio(ts_truth, ts_predictions[0])
-            evaluation_ts["bleu"] = sentence_bleu([ts_token_truth], ts_token_prediction, smoothing_function=SmoothingFunction().method2)
-            evaluation_ts["rouge"] = compute_rouge(ts_token_truth_str, ts_token_prediction_str)
-            evaluation_ts["meteor"] = meteor_score(references=[ts_token_truth], hypothesis=ts_token_prediction)
-            evaluation_ts["n"] += 1
+            ts_predictions = data["tsPredictions"]
+            ts_truth = data["tsTruth"]
+            print("Tokenizing ts")
+            # ts_token_prediction = tokenize_code(js_predictions[0])
+            # ts_token_truth = tokenize_code(js_truth)
 
+            update_evaluation(
+                evaluation_ts,
+                1, #meteor_score(references=[ts_token_truth], hypothesis=ts_token_prediction),
+                compute_bleu(ts_truth, ts_predictions[0])[0], #sentence_bleu([ts_token_truth], ts_token_prediction, smoothing_function=SmoothingFunction().method2),
+                Levenshtein.ratio(ts_truth, ts_predictions[0]),
+                {"f1":1,"precision":1,"recall":1}# compute_rouge(" ".join(ts_token_truth), " ".join(ts_token_prediction))
+            )
+
+    print("Averaging")
     average_evaluation(evaluation_js)
     average_evaluation(evaluation_ts)
 
@@ -127,6 +131,7 @@ print(f"Found {len(folders)} folders")
 # result is a list of metrics. we should average them
 # result = Parallel(n_jobs=MAX_WORKERS)(delayed(evaluate_folder)(folder) for folder in tqdm(folders))
 print(evaluate_folder(folders[0]))
+print("Done")
 
 with open("./data/Evaluation_Py.json", "w") as f:
     f.write(json.dumps(result))
