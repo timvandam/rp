@@ -1,19 +1,20 @@
 import glob
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from joblib import Parallel, delayed
 import json
 from typing import List
 import torch
 from unixcoder import UniXcoder
 import os
-import progressbar
 from tqdm import tqdm
-import math
 
-MASKED_FOLDER = './data/Masked'
-PREDICTED_FOLDER = './data/Predicted'
 
-print("CUDA Available: " + str(torch.cuda.is_available()))
+with open('./config.json') as f:
+    config = json.loads(f.read())
+
+
+MASKED_FOLDER = config["MASKED_FOLDER"]
+PREDICTED_FOLDER = config["PREDICTED_FOLDER"]
+MAX_WORKERS = int(config["ALLOWED_CPUS"] * os.cpu_count())
 
 
 def predict_folder_files(folder_paths: List[str]):
@@ -57,20 +58,11 @@ total_folders = len(masked_folders)
 processed_folders = 0
 print(f"Found {total_folders} folders")
 
-max_workers = 3
-print("Spawning at most " + str(max_workers) + " threads")
+print("Spawning at most " + str(MAX_WORKERS) + " threads")
 
 batch_size = 3
 batches = [masked_folders[i:i + batch_size] for i in range(0, len(masked_folders), batch_size)]
 
-# with ThreadPoolExecutor(max_workers=max_workers) as executor, progressbar.ProgressBar(maxval=total_folders) as bar:
-#     print("Starting processes")
-#     executors = [executor.submit(predict_folder_files, batch) for batch in batches]
-
-#     for result in as_completed(executors):
-#         processed_folders += 1
-#         # bar.update(processed_folders)
-
-Parallel(n_jobs=max_workers)(delayed(predict_folder_files)(batch) for batch in tqdm(batches))
+Parallel(n_jobs=MAX_WORKERS)(delayed(predict_folder_files)(batch) for batch in tqdm(batches))
 
 print("Finished processing " + str(processed_folders) + " folders")

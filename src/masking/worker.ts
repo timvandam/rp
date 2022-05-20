@@ -9,7 +9,7 @@ import { randInt } from '../utils'
 import { workerData } from 'worker_threads'
 import { reportProgress, reportTotal } from '../threading'
 
-export async function maskAllPreprocessed () {
+async function maskAllPreprocessed () {
 	const folders = workerData as string[]
 	reportTotal(folders.length)
 	for (const folder of folders) {
@@ -57,6 +57,7 @@ const COMMENT_REGEX = /^\/\/.+|\/\*.+\*\/$/ // full line comments
  * Gets masked versions of the code
  * @param code Input code (file from the Preprocessed folder)
  * @todo try multiple masks
+ * @todo make this work properly. currently it sucks
  */
 function getMaskedFunctions (code: string): { tsTruth: string, jsTruth: string, tsMasked: string, jsMasked: string } {
 	const project = new Project({

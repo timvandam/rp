@@ -1,0 +1,7 @@
+{
+	"REPOS_FOLDER": "./data/Repos",
+	"PREPROCESSED_FOLDER": "./data/Preprocessed",
+	"MASKED_FOLDER": "./data/Masked",
+	"PREDICTED_FOLDER": "./data/Predicted",
+	"ALLOWED_CPUS": 0.7
+}

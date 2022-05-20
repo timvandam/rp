@@ -1,7 +1,11 @@
 import os from 'os'
+import { readFileSync } from 'fs'
+import path from 'path'
 
-export const REPOS_FOLDER = './data/Repos'
-export const PREPROCESSED_FOLDER = './data/Preprocessed'
-export const MASKED_FOLDER = './data/Masked'
-export const PREDICTED_FOLDER = './data/Predicted'
-export const ALLOWED_CPUS = Math.floor(os.cpus().length * 0.7)
+const config: Record<string, any> = JSON.parse(readFileSync(path.resolve(__dirname, '../config.json'), 'utf8'))
+
+export const REPOS_FOLDER: string = config.REPOS_FOLDER
+export const PREPROCESSED_FOLDER: string = config.PREPROCESSED_FOLDER
+export const MASKED_FOLDER: string = config.MASKED_FOLDER
+export const PREDICTED_FOLDER: string = config.PREDICTED_FOLDER
+export const ALLOWED_CPUS: number = Math.floor(os.cpus().length * config.ALLOWED_CPUS)
