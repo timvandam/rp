@@ -9,3 +9,4 @@ export const PREPROCESSED_FOLDER: string = config.PREPROCESSED_FOLDER
 export const MASKED_FOLDER: string = config.MASKED_FOLDER
 export const PREDICTED_FOLDER: string = config.PREDICTED_FOLDER
 export const ALLOWED_CPUS: number = Math.floor(os.cpus().length * config.ALLOWED_CPUS)
+export const TRAIN_FILE: string = config.TRAIN_FILE

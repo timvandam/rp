@@ -23,3 +23,8 @@ Mask is masked code, and truth is what statement was originally in place of the 
 
 ## Predict output
 Predict output is the same as mask output, but adds `tsPredictions` and `jsPredictions`.
+
+# Fine-tuning UniXcoder on TS & JS
+First, make sure that the files have been preprocessed (`npm run preprocess`).
+Then run `npm run create-train-file` in order to create a file that UniXcoder can be trained on.
+Then follow the instructions in CodeBERT/UniXcoder/downstream-tasks/code-completion, using the generated `train.txt` file instead of their dataset.

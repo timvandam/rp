@@ -3,5 +3,6 @@
 	"PREPROCESSED_FOLDER": "./data/Preprocessed",
 	"MASKED_FOLDER": "./data/Masked",
 	"PREDICTED_FOLDER": "./data/Predicted",
+	"TRAIN_FILE": "./data/train.txt",
 	"ALLOWED_CPUS": 0.7
 }

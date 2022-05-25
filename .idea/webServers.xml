@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="c446db34-3cb2-4ece-8b27-adf0463c3dcb" name="larisa">
+        <fileTransfer rootFolder="/home/tdam" accessType="SFTP" host="145.94.127.60" port="22" sshConfigId="453bd4fe-5078-4f7d-ba35-dc5c2bcd21c6" sshConfig="tdam@145.94.127.60:22 agent" authAgent="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

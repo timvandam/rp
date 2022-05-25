@@ -15,3 +15,17 @@ export function batchBySize<T>(jobs: T[], batchSize: number): T[][] {
 export function batchByAmount<T>(jobs: T[], batchCount: number): T[][] {
 	return batchBySize(jobs, Math.ceil(jobs.length / batchCount))
 }
+
+export function* map<T, R>(iterable: Iterable<T>, mapper: (value: T) => R): Generator<R> {
+	for (const value of iterable) {
+		yield mapper(value)
+	}
+}
+
+export function reduce<T, R>(iterable: Iterable<T>, reducer: (accumulator: R, value: T) => R, initialValue: R): R {
+	let accumulator = initialValue
+	for (const value of iterable) {
+		accumulator = reducer(accumulator, value)
+	}
+	return accumulator
+}

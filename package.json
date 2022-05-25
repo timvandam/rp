@@ -7,7 +7,8 @@
     "preprocess": "tsc -b && node ./dist/preprocessing/master.js",
     "mask": "tsc -b && node ./dist/masking/master.js",
     "predict": "python py/predict_masks.py",
-    "evaluate": "tsc -b && node ./dist/evaluate/master.js"
+    "evaluate": "tsc -b && node ./dist/evaluate/master.js",
+    "create-train-file": "tsc -b && node ./dist/unixcoder-train/master.js"
   },
   "repository": {
     "type": "git",
