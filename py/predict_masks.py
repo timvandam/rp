@@ -4,8 +4,10 @@ import json
 from typing import List
 import torch
 from torch import nn
+from torch.utils.data import TensorDataset, SequentialSampler, DataLoader
 from transformers import RobertaTokenizer, RobertaModel, RobertaConfig
 import gc
+import torch.onnx
 
 from seq2seq import Seq2Seq
 from unixcoder import UniXcoder
@@ -21,30 +23,40 @@ MASKED_FOLDER = config["MASKED_FOLDER"]
 PREDICTED_FOLDER = config["PREDICTED_FOLDER"]
 MAX_WORKERS = 1  # int(config["ALLOWED_CPUS"] * os.cpu_count())
 
+# def tokenize(item):
+#     source, max_length, tokenizer = item
+#     source_tokens = [x for x in tokenizer.tokenize(source) if x!='\u0120']
+#     source_tokens = ["<s>","<decoder-only>","</s>"]+source_tokens[-(max_length-3):]
+#     source_ids =  tokenizer.convert_tokens_to_ids(source_tokens)
+#     padding_length = max_length - len(source_ids)
+#     source_ids += [tokenizer.pad_token_id]*padding_length
+#     return source_tokens,source_ids
 
+# Examples format: [{ "source": "code", "groundTruth": "truth" }]
+# def convert_examples_to_source_ids(examples, tokenizer, args,):
+#     sources = [(x.source, 936, tokenizer) for x in examples]
+#     tokenize_tokens = [tokenize(x) for x in sources]
+#     return torch.tensor([sids for eidx, (st, sids) in tokenize_tokens], dtype=torch.long)
 
 
 def predict_folder_files(folder_paths: List[str]):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    # model = UniXcoder("microsoft/unixcoder-base")
-    tokenizer = RobertaTokenizer.from_pretrained("microsoft/unixcoder-base")
-    config =RobertaConfig.from_pretrained("microsoft/unixcoder-base")
+    config = RobertaConfig.from_pretrained("microsoft/unixcoder-base")
     config.is_decoder = True
-
-    # budild model
+    tokenizer = RobertaTokenizer.from_pretrained("microsoft/unixcoder-base")
     encoder = RobertaModel.from_pretrained("microsoft/unixcoder-base", config=config)
     eos_ids = [tokenizer.convert_tokens_to_ids('Ġ;'), tokenizer.convert_tokens_to_ids('Ġ}'),
                    tokenizer.convert_tokens_to_ids('Ġ{')]
 
+
+    max_length = 936
     model = Seq2Seq(encoder=encoder, decoder=encoder, config=config,
-                    beam_size=5, max_length=936,
+                    beam_size=5, max_length=max_length,
                     sos_id=tokenizer.cls_token_id, eos_id=eos_ids)
     model.load_state_dict(torch.load("/mnt/tdam/models/saved_models/ts/epoch-9.bin"))
     model.to(device)
     print("Model loaded")
-
-    def tokenize(item):
-        source, max_length, tokenizer = item
+    def tokenize(source):
         source_tokens = [x for x in tokenizer.tokenize(source) if x != '\u0120']
         source_tokens = ["<s>", "<decoder-only>", "</s>"] + source_tokens[-(max_length - 3):]
         source_ids = tokenizer.convert_tokens_to_ids(source_tokens)
@@ -52,20 +64,27 @@ def predict_folder_files(folder_paths: List[str]):
         source_ids += [tokenizer.pad_token_id] * padding_length
         return source_tokens, source_ids
 
-    def predict_statement_mask(code: str) -> List[str]:
-        print(torch.cuda.memory_summary(device=None, abbreviated=False))
-        source = (code, 936 + 64, tokenizer)
+    # TODO: Batching if this is slow
+    def predict_statement_mask(source: str) -> List[str]:
         tokens_ids = tokenize(source)[1]
-        source_ids = torch.tensor([tokens_ids]).to(device)
-        torch.cuda.memory_summary(device=None, abbreviated=False)
-        prediction_ids = model.forward(source_ids)
-        torch.cuda.memory_summary(device=None, abbreviated=False)
-        predictions = model.decode(prediction_ids)
-        torch.cuda.memory_summary(device=None, abbreviated=False)
+        all_source_ids = torch.tensor([tokens_ids], dtype=torch.long).to(device)
+        model.eval()
+        predictions = []
+        source_ids =all_source_ids
+        with torch.no_grad():
+            preds = model(source_ids=source_ids)
+            for pred in preds:
+                t=pred[0].cpu().numpy()
+                t=list(t)
+                if 0 in t:
+                    t=t[:t.index(0)]
+                text = tokenizer.decode(t)
+                predictions.append(text)
+            print("Predictions: ", predictions)
         del source_ids
         torch.cuda.empty_cache()
         gc.collect()
-        return [x.replace("<mask0>", "").strip() for x in predictions[0]]
+        return predictions
 
     for folder_path in folder_paths:
         print("Handling folder " + folder_path)
@@ -82,6 +101,7 @@ def predict_folder_files(folder_paths: List[str]):
                 with open(root + "/" + file, "r") as f_in:
                     txt = f_in.read()
                     data = json.loads(txt)
+                print("prediction",data)
                 data["tsPredictions"] = predict_statement_mask(data["tsMasked"])
                 data["jsPredictions"] = predict_statement_mask(data["jsMasked"])
                 with open(out_path, "w") as f_out:
