@@ -79,6 +79,8 @@ def predict_folder_files(folder_paths: List[str]):
                 if 0 in t:
                     t=t[:t.index(0)]
                 text = tokenizer.decode(t)
+                if "{" in text:
+                    text = text[:text.index("{")]
                 predictions.append(text)
             print("Predictions: ", predictions)
         del source_ids

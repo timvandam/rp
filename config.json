@@ -1,8 +1,9 @@
 {
-	"REPOS_FOLDER": "./data/Repos",
-	"PREPROCESSED_FOLDER": "./data/Preprocessed",
-	"MASKED_FOLDER": "./data/Masked",
-	"PREDICTED_FOLDER": "./data/Predicted",
-	"TRAIN_FILE": "./data/train.txt",
-	"ALLOWED_CPUS": 0.7
+  "REPOS_FOLDER": "./data/Repos",
+  "PREPROCESSED_FOLDER": "./data/Preprocessed",
+  "MASKED_FOLDER": "./data/Masked",
+  "PREDICTED_FOLDER": "./data/Predicted",
+  "TRAIN_FILE": "./data/train.txt",
+  "ALLOWED_CPUS": 0.8,
+  "LINE_MASK_CHANCE": 0.2
 }
