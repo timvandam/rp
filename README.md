@@ -6,9 +6,10 @@ This will take a while
 git clone git@github.com:timvandam/rp.git
 # ↓ this clones ~50gb of typescript repos ↓ 
 cd data && chmod +x ./cloner.sh && ./cloner.sh && cd ..
-npm run preprocess # extract TS functions
-npm run mask # masks TS functions, and create equivalent JS versions
-npm run predict # applies UniXcoder
+npm run get-functions # extract TS functions
+npm run split-data # split data into train/test/validation
+npm run create-model-files # create train + validation files for UniXcoder finetuning
+npm run predict # apply UniXcoder to test set
 npm run evaluate # runs metrics and reports them
 ```
 
@@ -21,12 +22,12 @@ The file name is always `[fileName].[functionName].[hash].ts`.
 Masking outputs one file for each masked version of a function.
 One function might be masked multiple times.
 The config file (`config.json`) can be used to set what % of lines should be masked.
-Masking output is always a json object: `{ ts: { truth: string, input: string }, js: { truth: string, input: string } }`
+Masking output is always a json object: `{ ts: { gt: string, input: string }, js: { gt: string, input: string } }`
 The file name is always `[fileName].[i].json`, where `fileName` is the name of the preprocessed file, and `i` is a number to differentiate different masked version of the same function. 
 
 ## Predict output
 Prediction outputs one language as a time, as prediction requires two separate processes to run (one for JS, one for TS).
-The output is `{ "input": string, "truth": string, "predictions": string[] }`, and the file names are similar to that of the masked files: `[fileName].[i].[language].json``
+The output is `{ "input": string, "gt": string, "predictions": string[] }`, and the file names are similar to that of the masked files: `[fileName].[i].[language].json``
 
 # Fine-tuning UniXcoder on TS
 First, make sure that the files have been preprocessed (`npm run preprocess`).

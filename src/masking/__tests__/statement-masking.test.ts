@@ -51,7 +51,6 @@ describe('getFunctionBodyBounds', () => {
     const x = \`{{\${a}\`
 /*end*/}`,
   ])('should return indices of the starting and ending { } of a function', (code) => {
-    addMaskComments(code);
     const tokens = [...tokenize(code)];
     const startIndex = 1 + findMultilineComment(tokens, 'start');
     const endIndex = 1 + findMultilineComment(tokens, 'end');

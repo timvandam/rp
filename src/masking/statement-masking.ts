@@ -1,6 +1,7 @@
 import tokenize, { Token } from 'js-tokens';
 import { findIndexRight, randChoice, randChoices, range } from '../utils';
-import { LINE_MASK_CHANCE } from '../config';
+import { LINE_MASK_CHANCE, RANDOM_SEED } from '../config';
+import random from 'random-seed';
 
 const MASK_COMMENT = '/*<mask>*/';
 
@@ -17,12 +18,14 @@ export function addMaskComments(code: string) {
   const lineRanges = getLineRanges(tokens, startIndex + 1, endIndex - 1);
 
   if (lineRanges.length === 0) {
-    throw new Error('No lines');
+    return code;
   }
 
+  const prng = random.create(RANDOM_SEED);
   for (const [from, to] of randChoices(
     lineRanges,
     Math.max(1, Math.floor(lineRanges.length * LINE_MASK_CHANCE)),
+    prng.random.bind(prng),
   ).reverse()) {
     maskRange(tokens, from, to);
   }
@@ -124,8 +127,11 @@ function isMaskableToken(token: Token): boolean {
   }
 }
 
-export function getMaskedVariants(code: string): { input: string; truth: string }[] {
+export function getMaskedVariants(code: string): { input: string; gt: string }[] {
   const parts = code.split(MASK_COMMENT);
+
+  if (parts.length === 1) return [];
+
   const truths = parts
     .slice(1)
     .map((part) => part.match(/.+/)?.[0])
@@ -133,12 +139,13 @@ export function getMaskedVariants(code: string): { input: string; truth: string 
     .map((truth) => removeComments(truth).trim());
 
   if (truths.length !== parts.length - 1) {
-    throw new Error(
-      'Can not find all truths. If this is JS some comments may have been removed during transpilation',
-    );
+    // throw new Error(
+    //   'Can not find all truths. If this is JS some comments may have been removed during transpilation',
+    // );
+    return [];
   }
 
-  return truths.map((truth, i) => ({ input: parts.slice(0, i + 1).join(''), truth }));
+  return truths.map((gt, i) => ({ input: parts.slice(0, i + 1).join(''), gt }));
 }
 
 /**

@@ -1,9 +1,15 @@
 {
   "REPOS_FOLDER": "./data/Repos",
-  "PREPROCESSED_FOLDER": "./data/Preprocessed",
+  "FUNCTIONS_FOLDER": "./data/Functions",
+  "UNIXCODER_FOLDER": "./data/UniXcoder",
   "MASKED_FOLDER": "./data/Masked",
   "PREDICTED_FOLDER": "./data/Predicted",
-  "TRAIN_FILE": "./data/train.txt",
   "ALLOWED_CPUS": 0.8,
-  "LINE_MASK_CHANCE": 0.2
+  "LINE_MASK_CHANCE": 0.2,
+  "DATASET_SPLIT": {
+    "TRAIN": 0.75,
+    "TEST": 0.2,
+    "DEV": 0.05
+  },
+  "RANDOM_SEED": 42
 }
