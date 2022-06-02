@@ -23,15 +23,21 @@ async function createTrainFiles() {
   const filesTxt = await readFile(path.resolve(FUNCTIONS_FOLDER, 'train.txt'), 'utf8');
   const files = filesTxt.split('\n').slice(0, -1);
 
-  const writeStream = createWriteStream(path.resolve(UNIXCODER_FOLDER, 'train.txt'), 'utf8');
+  const writeStreamTs = createWriteStream(path.resolve(UNIXCODER_FOLDER, 'train_ts.txt'), 'utf8');
+  const writeStreamJs = createWriteStream(path.resolve(UNIXCODER_FOLDER, 'train_js.txt'), 'utf8');
   for (const file of files) {
     const code = await readFile(path.resolve(FUNCTIONS_FOLDER, file), 'utf8');
-    //TODO: Also create JS equivalents!!
-    const line = `<s> ${preprocess(code)} </s>\n`;
-    writeStream.write(line);
+    const jsCode = ts.transpile(code, {
+      target: ScriptTarget.ESNext,
+      removeComments: false,
+    });
+
+    writeStreamTs.write(`<s> ${preprocess(code)} </s>\n`);
+    writeStreamJs.write(`<s> ${preprocess(jsCode)} </s>\n`);
   }
 
-  writeStream.end();
+  writeStreamTs.end();
+  writeStreamJs.end();
 }
 
 function createTestFiles() {

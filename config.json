@@ -2,7 +2,6 @@
   "REPOS_FOLDER": "./data/Repos",
   "FUNCTIONS_FOLDER": "./data/Functions",
   "UNIXCODER_FOLDER": "./data/UniXcoder",
-  "MASKED_FOLDER": "./data/Masked",
   "PREDICTED_FOLDER": "./data/Predicted",
   "ALLOWED_CPUS": 0.8,
   "LINE_MASK_CHANCE": 0.2,

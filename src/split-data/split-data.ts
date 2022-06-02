@@ -32,7 +32,7 @@ export async function splitData() {
   dev.end();
 
   console.log(
-    `Done. Created train.txt, test.txt and validation.txt in the ${FUNCTIONS_FOLDER} folder`,
+    `Done. Created train.txt, test.txt and dev.txt in the ${FUNCTIONS_FOLDER} folder`,
   );
 }
 

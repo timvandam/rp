@@ -9,7 +9,6 @@ const config: Record<string, any> = JSON.parse(
 export const REPOS_FOLDER: string = config.REPOS_FOLDER;
 export const FUNCTIONS_FOLDER: string = config.FUNCTIONS_FOLDER;
 export const UNIXCODER_FOLDER: string = config.UNIXCODER_FOLDER;
-export const MASKED_FOLDER: string = config.MASKED_FOLDER;
 export const PREDICTED_FOLDER: string = config.PREDICTED_FOLDER;
 export const ALLOWED_CPUS: number = Math.floor(os.cpus().length * config.ALLOWED_CPUS);
 export const LINE_MASK_CHANCE: number = config.LINE_MASK_CHANCE;

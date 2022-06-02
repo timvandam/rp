@@ -13,6 +13,7 @@ npm run predict # apply UniXcoder to test set
 npm run evaluate # runs metrics and reports them
 ```
 
+[//]: # (TODO: Update these sections)
 ## Preprocessing output
 Preprocessing outputs one file for each function and method.
 This file contains the TS function including any leading JSDocs if present.
@@ -30,6 +31,21 @@ Prediction outputs one language as a time, as prediction requires two separate p
 The output is `{ "input": string, "gt": string, "predictions": string[] }`, and the file names are similar to that of the masked files: `[fileName].[i].[language].json``
 
 # Fine-tuning UniXcoder on TS
-First, make sure that the files have been preprocessed (`npm run preprocess`).
-Then run `npm run create-train-file` in order to create a file that UniXcoder can be trained on.
-Then follow the instructions in CodeBERT/UniXcoder/downstream-tasks/code-completion, using the generated `train.txt` file instead of their dataset.
+First, make sure that the functions have been extracted and that the model files have been created.
+Then run `run.py` as such:
+```bash
+python ~/ts-vs-js/py/run.py \
+	--do_train \
+	--do_eval \
+	--model_name_or_path microsoft/unixcoder-base \
+	--train_filename ../data/UniXcoder/train_ts.txt \
+	--dev_filename ../data/UniXcoder/dev_ts.json \
+  --output_dir saved_models/ts \
+  --max_source_length 936 \
+  --max_target_length 64 \
+  --beam_size 3 \
+  --train_batch_size 2 \
+  --gradient_accumulation_steps 1 \
+  --learning_rate 2e-5 \
+  --num_train_epochs 10
+```
