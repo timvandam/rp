@@ -34,7 +34,7 @@ async function createMaskedFiles(filePath: string): Promise<void> {
 
   const masked = getMaskedFunctions(code);
   for (const [i, obj] of enumerate(masked)) {
-    const outFilePath = path.resolve(outDirPath, `${fileName}.${i}.masked.json`);
+    const outFilePath = path.resolve(outDirPath, `${fileName}.${i}.json`);
     await writeFile(outFilePath, JSON.stringify(obj));
     reportResult(path.relative(MASKED_FOLDER, outFilePath));
   }

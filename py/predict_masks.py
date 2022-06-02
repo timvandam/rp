@@ -1,126 +1,125 @@
-import glob
-from joblib import Parallel, delayed
 import json
-from typing import List
+from typing import List, Literal
 import torch
-from torch import nn
 from torch.utils.data import TensorDataset, SequentialSampler, DataLoader
 from transformers import RobertaTokenizer, RobertaModel, RobertaConfig
-import gc
 import torch.onnx
-
+from pathlib import Path
 from seq2seq import Seq2Seq
-from unixcoder import UniXcoder
 import os
 from tqdm import tqdm
-
 
 with open('./config.json') as f:
     config = json.loads(f.read())
 
-
 MASKED_FOLDER = config["MASKED_FOLDER"]
 PREDICTED_FOLDER = config["PREDICTED_FOLDER"]
-MAX_WORKERS = 1  # int(config["ALLOWED_CPUS"] * os.cpu_count())
-
-# def tokenize(item):
-#     source, max_length, tokenizer = item
-#     source_tokens = [x for x in tokenizer.tokenize(source) if x!='\u0120']
-#     source_tokens = ["<s>","<decoder-only>","</s>"]+source_tokens[-(max_length-3):]
-#     source_ids =  tokenizer.convert_tokens_to_ids(source_tokens)
-#     padding_length = max_length - len(source_ids)
-#     source_ids += [tokenizer.pad_token_id]*padding_length
-#     return source_tokens,source_ids
-
-# Examples format: [{ "source": "code", "groundTruth": "truth" }]
-# def convert_examples_to_source_ids(examples, tokenizer, args,):
-#     sources = [(x.source, 936, tokenizer) for x in examples]
-#     tokenize_tokens = [tokenize(x) for x in sources]
-#     return torch.tensor([sids for eidx, (st, sids) in tokenize_tokens], dtype=torch.long)
+BATCH_SIZE = 32
+# FINETUNED_MODEL_PATH = "data/model/epoch-9.bin"
+FINETUNED_MODEL_PATH = "/mnt/tdam/models/saved_models/ts/epoch-9.bin"
+# FINETUNED_MODEL_PATH = None
+LANGUAGE: Literal["js", "ts"] = "ts"
 
 
-def predict_folder_files(folder_paths: List[str]):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    config = RobertaConfig.from_pretrained("microsoft/unixcoder-base")
-    config.is_decoder = True
-    tokenizer = RobertaTokenizer.from_pretrained("microsoft/unixcoder-base")
-    encoder = RobertaModel.from_pretrained("microsoft/unixcoder-base", config=config)
-    eos_ids = [tokenizer.convert_tokens_to_ids('Ġ;'), tokenizer.convert_tokens_to_ids('Ġ}'),
-                   tokenizer.convert_tokens_to_ids('Ġ{')]
+class Example:
+    def __init__(self, input: str, truth: str, file: str):
+        self.input = input
+        self.truth = truth
+        self.file = file
 
 
-    max_length = 936
-    model = Seq2Seq(encoder=encoder, decoder=encoder, config=config,
-                    beam_size=5, max_length=max_length,
-                    sos_id=tokenizer.cls_token_id, eos_id=eos_ids)
-    model.load_state_dict(torch.load("/mnt/tdam/models/saved_models/ts/epoch-9.bin"))
-    model.to(device)
-    print("Model loaded")
-    def tokenize(source):
-        source_tokens = [x for x in tokenizer.tokenize(source) if x != '\u0120']
-        source_tokens = ["<s>", "<decoder-only>", "</s>"] + source_tokens[-(max_length - 3):]
-        source_ids = tokenizer.convert_tokens_to_ids(source_tokens)
-        padding_length = max_length - len(source_ids)
-        source_ids += [tokenizer.pad_token_id] * padding_length
-        return source_tokens, source_ids
+# read file paths from some file
+# only reads the specified language
+def read_examples(filename: str = str(Path(MASKED_FOLDER, 'files.txt'))) -> List[Example]:
+    examples: List[Example] = []
+    with open(filename, 'r') as file:
+        lines = file.readlines()
+        for line in tqdm(lines, desc="Loading examples"):
+            masked_filename = line.strip()
+            with open(str(Path(MASKED_FOLDER, masked_filename))) as masked_file:
+                obj = json.loads(masked_file.read())
+                examples.append(Example(obj[LANGUAGE]["input"], obj[LANGUAGE]["truth"], masked_filename))
 
-    # TODO: Batching if this is slow
-    def predict_statement_mask(source: str) -> List[str]:
-        tokens_ids = tokenize(source)[1]
-        all_source_ids = torch.tensor([tokens_ids], dtype=torch.long).to(device)
-        model.eval()
-        predictions = []
-        source_ids =all_source_ids
-        with torch.no_grad():
-            preds = model(source_ids=source_ids)
-            for pred in preds:
-                t=pred[0].cpu().numpy()
-                t=list(t)
-                if 0 in t:
-                    t=t[:t.index(0)]
-                text = tokenizer.decode(t)
-                if "{" in text:
-                    text = text[:text.index("{")]
-                predictions.append(text)
-            print("Predictions: ", predictions)
-        del source_ids
-        torch.cuda.empty_cache()
-        gc.collect()
-        return predictions
-
-    for folder_path in folder_paths:
-        print("Handling folder " + folder_path)
-        for root, dirs, files in os.walk(folder_path):
-            out_folder_path = root.replace(MASKED_FOLDER, PREDICTED_FOLDER)
-            os.makedirs(out_folder_path, exist_ok=True)
-            for file in files:
-                out_file_name = ".".join(file.split(".")[:-2]) + ".predicted.json"
-                out_path = out_folder_path + "/" + out_file_name
-
-                if os.path.isfile(out_path):
-                    continue
-
-                with open(root + "/" + file, "r") as f_in:
-                    txt = f_in.read()
-                    data = json.loads(txt)
-                print("prediction",data)
-                data["tsPredictions"] = predict_statement_mask(data["tsMasked"])
-                data["jsPredictions"] = predict_statement_mask(data["jsMasked"])
-                with open(out_path, "w") as f_out:
-                    f_out.write(json.dumps(data))
+    return examples
 
 
-masked_folders = glob.glob(MASKED_FOLDER + "/*")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+config = RobertaConfig.from_pretrained("microsoft/unixcoder-base")
+config.is_decoder = True
+tokenizer = RobertaTokenizer.from_pretrained("microsoft/unixcoder-base")
+encoder = RobertaModel.from_pretrained("microsoft/unixcoder-base", config=config)
+eos_ids = [tokenizer.convert_tokens_to_ids('Ġ;'), tokenizer.convert_tokens_to_ids('Ġ}'),
+           tokenizer.convert_tokens_to_ids('Ġ{')]
+eos_ids = [tokenizer.sep_token_id]
 
-total_folders = len(masked_folders)
-processed_folders = 0
-print(f"Found {total_folders} folders")
+max_length = 936
+model = Seq2Seq(encoder=encoder, decoder=encoder, config=config,
+                beam_size=5, max_length=max_length,
+                sos_id=tokenizer.cls_token_id, eos_id=eos_ids)
 
-print("Spawning at most " + str(MAX_WORKERS) + " threads")
+if FINETUNED_MODEL_PATH is not None:
+    model.load_state_dict(torch.load(FINETUNED_MODEL_PATH))
 
-batch_size = 3
-batches = [masked_folders[i:i + batch_size] for i in range(0, len(masked_folders), batch_size)]
+model.to(device)
+print("Model loaded")
 
-Parallel(n_jobs=MAX_WORKERS)(delayed(predict_folder_files)(batch) for batch in tqdm(batches))
 
-print("Finished processing " + str(processed_folders) + " folders")
+def tokenize(source):
+    source_tokens = [x for x in tokenizer.tokenize(source) if x != '\u0120']
+    source_tokens = ["<s>", "<decoder-only>", "</s>"] + source_tokens[-(max_length - 3):]
+    source_ids = tokenizer.convert_tokens_to_ids(source_tokens)
+    source_ids = source_ids + [tokenizer.pad_token_id] * (max_length - len(source_ids))
+    return source_tokens, source_ids
+
+
+# takes a list of examples and returns their source ids
+def convert_examples_to_all_source_ids(examples: List[Example]):
+    return torch.tensor([tokenize(example.input)[1] for example in examples], dtype=torch.long)
+
+
+def post_process(code: str):
+    return code \
+        .replace("<NUM_LIT>", "0") \
+        .replace("<STR_LIT>", "")
+
+
+examples = read_examples()
+all_source_ids = convert_examples_to_all_source_ids(examples)
+data = TensorDataset(all_source_ids)
+sampler = SequentialSampler(data)
+dataloader = DataLoader(data, sampler=sampler, batch_size=BATCH_SIZE)
+model.eval()
+
+Path(PREDICTED_FOLDER).mkdir(parents=True, exist_ok=True)
+files = open(str(Path(PREDICTED_FOLDER, 'files.txt')), 'w+')
+
+for batch in tqdm(dataloader, desc="Predicting", total=len(dataloader)):
+    batch = tuple(t.to(device) for t in batch)
+    source_ids = batch[0]
+    with torch.no_grad():
+        predictions = model(source_ids=source_ids)
+        # TODO: Emit all predictions
+        for prediction in predictions:
+            example = examples.pop(0)
+            t = list(prediction[0].cpu().numpy())
+            if 0 in t:
+                t = t[:t.index(0)]
+            text = tokenizer.decode(t, clean_up_tokenization_spaces=False)
+            if "{" in text:
+                text = text[:text.index("{") + 1]
+            if "</s>" in text:
+                text = text[:text.index("</s>")]
+            text = post_process(text)
+
+            filepath = os.path.splitext(example.file)[0]
+            write_filepath = f"{filepath}.{LANGUAGE}.json"
+            path = Path(PREDICTED_FOLDER, write_filepath)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(json.dumps({
+                "input": example.input,
+                "truth": example.truth,
+                "prediction": [text]
+            }))
+            files.write(write_filepath + "\n")
+
+files.close()

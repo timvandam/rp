@@ -5,36 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2608a7e4-e958-4359-b453-3cadeb93dd38" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/markdown.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/prettier.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.prettierrc.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jest.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/masking/__tests__/statement-masking.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/masking/statement-masking.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/discord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/rp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/rp.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sshConfigs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/py/predict_masks copy.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/py/predict_masks.py" beforeDir="false" afterPath="$PROJECT_DIR$/py/predict_masks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/masking/master.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/masking/master.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/masking/maskSingleToken.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/masking/worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/masking/worker.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/preprocessing/master.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/preprocessing/master.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/preprocessing/worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/preprocessing/worker.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,37 +40,17 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;16.14.1&quot;,
-    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;16.11.36&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/tim/rp/data/Preprocessed/files.txt&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;/home/tim/rp/node_modules/jest&quot;,
-    &quot;nodejs_interpreter_path&quot;: &quot;/home/tim/.nvm/versions/node/v16.14.1/bin/node&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/home/tim/rp/node_modules/prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.completion&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/tim/rp/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.general&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/tim/rp/node_modules/typescript/lib&quot;
   }
 }</component>
   <component name="RunManager" selected="Jest.removeComments">
-    <configuration name="asd" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/src/masking/__tests__/statementMask.test.ts" />
-      <test-names>
-        <test-name value="asd" />
-      </test-names>
-      <method v="2" />
-    </configuration>
     <configuration name="comment block indices" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
@@ -146,13 +105,23 @@
       </test-names>
       <method v="2" />
     </configuration>
+    <configuration name="preprocess" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="preprocess" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.preprocess" />
         <item itemvalue="Jest.removeComments" />
         <item itemvalue="Jest.comment block indices.should return indices of the starting and ending { } of a function" />
         <item itemvalue="Jest.comment block indices.should return indices function with comments that contain { or }" />
         <item itemvalue="Jest.comment block indices" />
-        <item itemvalue="Jest.asd" />
       </list>
     </recent_temporary>
   </component>
@@ -172,6 +141,12 @@
       <workItem from="1653999159289" duration="17898000" />
       <workItem from="1654035291436" duration="32000" />
       <workItem from="1654073029721" duration="4473000" />
+      <workItem from="1654161219379" duration="318000" />
+      <workItem from="1654161558062" duration="1375000" />
+      <workItem from="1654163948204" duration="25000" />
+      <workItem from="1654163988804" duration="5710000" />
+      <workItem from="1654173958420" duration="8000" />
+      <workItem from="1654173979173" duration="8709000" />
     </task>
     <servers />
   </component>

@@ -32,7 +32,7 @@ async function handleTSFile(code: string, filePath: string) {
 
   await mkdir(outDirPath, { recursive: true });
   for (const { name, code: tsCode } of getTSFunctionsAndMethods(code)) {
-    const outFileName = `${fileName}.${name}.${sha256(tsCode).slice(0, 10)}.preprocessed`;
+    const outFileName = `${fileName}.${name}.${sha256(tsCode).slice(0, 10)}.ts`;
     const outFilePath = path.resolve(outDirPath, outFileName);
     await writeFile(outFilePath, tsCode);
     reportResult(path.relative(PREPROCESSED_FOLDER, outFilePath));
