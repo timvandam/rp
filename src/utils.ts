@@ -151,6 +151,20 @@ export function* zip<A, B>(as: Iterable<A>, bs: Iterable<B>): Iterable<[A, B]> {
   }
 }
 
+export async function* zipAsync<A, B>(
+  as: AsyncIterable<A>,
+  bs: AsyncIterable<B>,
+): AsyncIterable<[A, B]> {
+  const itA = as[Symbol.asyncIterator]();
+  const itB = bs[Symbol.asyncIterator]();
+
+  let a: IteratorResult<A>;
+  let b: IteratorResult<B>;
+  while (!(a = await itA.next()).done && !(b = await itB.next()).done) {
+    yield [a.value, b.value];
+  }
+}
+
 export function* inf<A>(a: A): Iterable<A> {
   while (true) {
     yield a;
@@ -180,8 +194,6 @@ export function not<A extends readonly unknown[]>(
 
 export function* concat<T>(...iterables: Iterable<T>[]): Iterable<T> {
   for (const it of iterables) {
-    for (const value of it) {
-      yield value;
-    }
+    yield* it;
   }
 }

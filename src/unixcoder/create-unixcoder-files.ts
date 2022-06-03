@@ -88,7 +88,7 @@ async function createMaskedFiles(name: string) {
         zipOne(writeStreamTs, maskedVariantsTs),
         zipOne(writeStreamJs, maskedVariantsJs),
       )) {
-        const obj = { input: `<s> ${preprocess(input)}`, gt };
+        const obj = { input: `<s> ${preprocess(input)}`, gt: preprocess(gt) };
         writeStream.write(`${JSON.stringify(obj)}\n`);
       }
     } catch (e: unknown) {}

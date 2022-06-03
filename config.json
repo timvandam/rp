@@ -2,7 +2,10 @@
   "REPOS_FOLDER": "./data/Repos",
   "FUNCTIONS_FOLDER": "./data/Functions",
   "UNIXCODER_FOLDER": "./data/UniXcoder",
-  "PREDICTED_FOLDER": "./data/Predicted",
+  "FINETUNED_MODELS": {
+    "TS": "./data/saved_models/ts",
+    "JS": "./data/saved_models/js"
+  },
   "ALLOWED_CPUS": 0.8,
   "LINE_MASK_CHANCE": 0.2,
   "DATASET_SPLIT": {

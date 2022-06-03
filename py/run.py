@@ -364,7 +364,7 @@ def main():
                 logger.info("  Num examples = %d", len(eval_examples))
                 logger.info("  Batch size = %d", args.eval_batch_size)
                 p = []
-                for batch in eval_dataloader:
+                for batch in tqdm(eval_dataloader, total=len(eval_dataloader)):
                     batch = tuple(t.to(device) for t in batch)
                     source_ids = batch[0]
                     with torch.no_grad():

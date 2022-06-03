@@ -6,9 +6,7 @@
   "scripts": {
     "get-functions": "tsc -b && node ./dist/get-functions/master.js",
     "split-data": "tsc -b && node ./dist/split-data/split-data.js",
-    "mask": "tsc -b && node ./dist/masking/master.js",
-    "predict": "python py/predict_masks.py",
-    "evaluate": "tsc -b && node ./dist/evaluate/master.js",
+    "evaluate": "tsc -b && node ./dist/evaluate/evaluate.js",
     "create-model-files": "tsc -b && node ./dist/unixcoder/create-unixcoder-files.js"
   },
   "repository": {

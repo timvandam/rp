@@ -1,12 +1,12 @@
 /**
-* @flow
-* @license
-* @Author: Lim Mingjie, Kenneth
-* @Date:   2016-01-20T18:56:14-05:00
-* @Email:  me@kenlimmj.com
-* @Last modified by:   Astrianna
-* @Last modified time: 2016-02-27T19:50:25-05:00
-*/
+ * @flow
+ * @license
+ * @Author: Lim Mingjie, Kenneth
+ * @Date:   2016-01-20T18:56:14-05:00
+ * @Email:  me@kenlimmj.com
+ * @Last modified by:   Astrianna
+ * @Last modified time: 2016-02-27T19:50:25-05:00
+ */
 
 import * as utils from './utils';
 export * from './utils';
@@ -36,20 +36,23 @@ export function n(
   cand: string,
   ref: string,
   opts?: {
-    n?: number,
-    nGram?: ((tokens: Array<string>, n: number) => Array<string>),
-    tokenizer?: ((input: string) => Array<string>)
-  }
+    n?: number;
+    nGram?: (tokens: Array<string>, n: number) => Array<string>;
+    tokenizer?: (input: string) => Array<string>;
+  },
 ): number {
   if (cand.length === 0) throw new RangeError('Candidate cannot be an empty string');
   if (ref.length === 0) throw new RangeError('Reference cannot be an empty string');
 
   // Merge user-provided configuration with defaults
-  opts = Object.assign({
-    n: 1,
-    nGram: utils.nGram,
-    tokenizer: utils.treeBankTokenize,
-  }, opts);
+  opts = Object.assign(
+    {
+      n: 1,
+      nGram: utils.nGram,
+      tokenizer: utils.treeBankTokenize,
+    },
+    opts,
+  );
 
   const candGrams = opts.nGram!(opts.tokenizer!(cand), opts.n!);
   const refGrams = opts.nGram!(opts.tokenizer!(ref), opts.n!);
@@ -84,20 +87,23 @@ export function s(
   cand: string,
   ref: string,
   opts?: {
-    beta?: number,
-    skipBigram?: ((tokens: Array<string>) => Array<string>),
-    tokenizer?: ((input: string) => Array<string>)
-  }
+    beta?: number;
+    skipBigram?: (tokens: Array<string>) => Array<string>;
+    tokenizer?: (input: string) => Array<string>;
+  },
 ): { recall: number; precision: number; f: number } {
   if (cand.length === 0) throw new RangeError('Candidate cannot be an empty string');
   if (ref.length === 0) throw new RangeError('Reference cannot be an empty string');
 
   // Merge user-provided configuration with defaults
-  opts = Object.assign({
-    beta: 0.5,
-    skipBigram: utils.skipBigram,
-    tokenizer: utils.treeBankTokenize,
-  }, opts);
+  opts = Object.assign(
+    {
+      beta: 0.5,
+      skipBigram: utils.skipBigram,
+      tokenizer: utils.treeBankTokenize,
+    },
+    opts,
+  );
 
   const candGrams = opts.skipBigram!(opts.tokenizer!(cand));
   const refGrams = opts.skipBigram!(opts.tokenizer!(ref));
@@ -108,7 +114,7 @@ export function s(
     return {
       precision: 0,
       recall: 0,
-      f: 0
+      f: 0,
     };
   } else {
     const skip2Recall = skip2 / refGrams.length;
@@ -117,8 +123,8 @@ export function s(
     return {
       recall: skip2Recall,
       precision: skip2Prec,
-      f: utils.fMeasure(skip2Prec, skip2Recall, opts.beta)
-    }
+      f: utils.fMeasure(skip2Prec, skip2Recall, opts.beta),
+    };
   }
 }
 
@@ -149,22 +155,25 @@ export function l(
   cand: string,
   ref: string,
   opts?: {
-    beta?: number,
-    lcs?: ((a: Array<string>, b: Array<string>) => Array<string>),
-    segmenter?: ((input: string) => Array<string>),
-    tokenizer?: ((input: string) => Array<string>)
-  }
+    beta?: number;
+    lcs?: (a: Array<string>, b: Array<string>) => Array<string>;
+    segmenter?: (input: string) => Array<string>;
+    tokenizer?: (input: string) => Array<string>;
+  },
 ): { recall: number; precision: number; f: number } {
   if (cand.length === 0) throw new RangeError('Candidate cannot be an empty string');
   if (ref.length === 0) throw new RangeError('Reference cannot be an empty string');
 
   // Merge user-provided configuration with defaults
-  opts = Object.assign({
-    beta: 0.5,
-    lcs: utils.lcs,
-    segmenter: utils.sentenceSegment,
-    tokenizer: utils.treeBankTokenize,
-  }, opts);
+  opts = Object.assign(
+    {
+      beta: 0.5,
+      lcs: utils.lcs,
+      segmenter: utils.sentenceSegment,
+      tokenizer: utils.treeBankTokenize,
+    },
+    opts,
+  );
 
   const candSents = opts.segmenter!(cand);
   const refSents = opts.segmenter!(ref);
@@ -172,9 +181,9 @@ export function l(
   const candWords = opts.tokenizer!(cand);
   const refWords = opts.tokenizer!(ref);
 
-  const lcsAcc = refSents.map(r => {
+  const lcsAcc = refSents.map((r) => {
     const rTokens = opts!.tokenizer!(r);
-    const lcsUnion = new Set(...candSents.map(c => opts!.lcs!(opts!.tokenizer!(c), rTokens)));
+    const lcsUnion = new Set(...candSents.map((c) => opts!.lcs!(opts!.tokenizer!(c), rTokens)));
 
     return lcsUnion.size;
   });
@@ -189,6 +198,6 @@ export function l(
   return {
     recall: lcsRecall,
     precision: lcsPrec,
-    f: utils.fMeasure(lcsPrec, lcsRecall, opts.beta)
+    f: utils.fMeasure(lcsPrec, lcsRecall, opts.beta),
   };
 }

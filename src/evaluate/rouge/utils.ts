@@ -1,18 +1,14 @@
 /**
-* @flow
-* @license
-* @Author: Lim Mingjie, Kenneth
-* @Date:   2016-01-20T18:56:22-05:00
-* @Email:  me@kenlimmj.com
-* @Last modified by:   Astrianna
-* @Last modified time: 2016-02-27T21:34:23-05:00
-*/
+ * @flow
+ * @license
+ * @Author: Lim Mingjie, Kenneth
+ * @Date:   2016-01-20T18:56:22-05:00
+ * @Email:  me@kenlimmj.com
+ * @Last modified by:   Astrianna
+ * @Last modified time: 2016-02-27T21:34:23-05:00
+ */
 
-import {
-  GATE_SUBSTITUTIONS,
-  GATE_EXCEPTIONS,
-  TREEBANK_CONTRACTIONS,
-} from './constants';
+import { GATE_SUBSTITUTIONS, GATE_EXCEPTIONS, TREEBANK_CONTRACTIONS } from './constants';
 
 /**
  * Splits a sentence into an array of word tokens
@@ -46,14 +42,15 @@ export function treeBankTokenize(input: string): Array<string> {
   // 6. Wrap spaces around all exclamation marks and question marks
   // 7. Wrap spaces around opening and closing brackets
   // 8. Wrap spaces around en and em-dashes
-  let parse = input.replace(/^\"/, ' `` ')
-                   .replace(/([ (\[{<])"/g, '$1 `` ')
-                   .replace(/\.\.\.*/g, ' ... ')
-                   .replace(/[;@#$%&]/g, ' $& ')
-                   .replace(/([^\.])(\.)([\]\)}>"\']*)\s*$/g, '$1 $2$3 ')
-                   .replace(/[,?!]/g, ' $& ')
-                   .replace(/[\]\[\(\)\{\}<>]/g, ' $& ')
-                   .replace(/---*/g, ' -- ');
+  let parse = input
+    .replace(/^\"/, ' `` ')
+    .replace(/([ (\[{<])"/g, '$1 `` ')
+    .replace(/\.\.\.*/g, ' ... ')
+    .replace(/[;@#$%&]/g, ' $& ')
+    .replace(/([^\.])(\.)([\]\)}>"\']*)\s*$/g, '$1 $2$3 ')
+    .replace(/[,?!]/g, ' $& ')
+    .replace(/[\]\[\(\)\{\}<>]/g, ' $& ')
+    .replace(/---*/g, ' -- ');
 
   // Wrap spaces at the start and end of the sentence for consistency
   // i.e. reduce the number of Regex matches required
@@ -64,10 +61,11 @@ export function treeBankTokenize(input: string): Array<string> {
   // 2. Wrap possessive or closing single quotes
   // 3. Add a space before single quotes followed by `s`, `m`, or `d` and a space
   // 4. Add a space before occurrences of `'ll`, `'re`, `'ve` or `n't`
-  parse = parse.replace(/"/g, ' \'\' ')
-               .replace(/([^'])' /g, '$1 \' ')
-               .replace(/'([sSmMdD]) /g, ' \'$1 ')
-               .replace(/('ll|'LL|'re|'RE|'ve|'VE|n't|N'T) /g, ' $1 ');
+  parse = parse
+    .replace(/"/g, " '' ")
+    .replace(/([^'])' /g, "$1 ' ")
+    .replace(/'([sSmMdD]) /g, " '$1 ")
+    .replace(/('ll|'LL|'re|'RE|'ve|'VE|n't|N'T) /g, ' $1 ');
 
   let iterator = -1;
   while (iterator++ < TREEBANK_CONTRACTIONS.length) {
@@ -76,8 +74,7 @@ export function treeBankTokenize(input: string): Array<string> {
   }
 
   // Concatenate double spaces and remove start/end spaces
-  parse = parse.replace(/\ \ +/g, ' ')
-               .replace(/^\ |\ $/g, '');
+  parse = parse.replace(/\ \ +/g, ' ').replace(/^\ |\ $/g, '');
 
   // Split on spaces (original and inserted) to return the tokenized result
   return parse.split(' ');
@@ -117,7 +114,8 @@ export function sentenceSegment(input: string): Array<string> {
           // Catch line breaks embedded within valid sentences
           // i.e. sentences that start with a capital letter
           // and merge them with a delimiting space
-          chunks[idx + 1] = (chunks[idx].trim() || '') + ' ' + (chunks[idx + 1] || '').replace(/ +/g, ' ');
+          chunks[idx + 1] =
+            (chunks[idx].trim() || '') + ' ' + (chunks[idx + 1] || '').replace(/ +/g, ' ');
         } else {
           // Assume that all other embedded line breaks are
           // valid sentence breakpoints
@@ -140,12 +138,16 @@ export function sentenceSegment(input: string): Array<string> {
 
         if (lastWord === lastWord.toLowerCase()) {
           // Catch small-letter abbreviations and merge them.
-          chunks[idx + 1] = chunks[idx + 1] = (chunks[idx] || '') + ' ' + (chunks[idx + 1] || '').replace(/ +/g, ' ');
+          chunks[idx + 1] = chunks[idx + 1] =
+            (chunks[idx] || '') + ' ' + (chunks[idx + 1] || '').replace(/ +/g, ' ');
         } else if (chunks[idx + 2]) {
           if (strIsTitleCase(words[words.length - 2]) && strIsTitleCase(chunks[idx + 2])) {
             // Catch name abbreviations (e.g. Albert I. Jones) by checking if
             // the previous and next words are all capitalized.
-            chunks[idx + 2] = (chunks[idx] || '') + (chunks[idx + 1] || '').replace(/ +/g, ' ') + (chunks[idx + 2] || '');
+            chunks[idx + 2] =
+              (chunks[idx] || '') +
+              (chunks[idx + 1] || '').replace(/ +/g, ' ') +
+              (chunks[idx + 2] || '');
           } else {
             // Assume that remaining entities are indeed end-of-sentence markers.
             acc.push(chunks[idx]);
@@ -231,10 +233,7 @@ function memoize(func: Function, Store: Function = Map): Function {
  * @param  {number} acc   The starting value for the computation. Defaults to 1.
  * @return {number}       The factorial result
  */
-function factRec(
-  x: number,
-  acc: number = 1
-): number {
+function factRec(x: number, acc: number = 1): number {
   if (x < 0) throw RangeError('Input must be a positive number');
   return x < 2 ? acc : factRec(x - 1, x * acc);
 }
@@ -248,9 +247,7 @@ export const fact = memoize(factRec);
  * @param  {Array<string>}    tokens      An array of word tokens
  * @return {Array<string>}                An array of skip bigram strings
  */
-export function skipBigram(
-  tokens: Array<string>
-): Array<string> {
+export function skipBigram(tokens: Array<string>): Array<string> {
   if (tokens.length < 2) throw new RangeError('Input must have at least two words');
 
   let acc = [];
@@ -274,11 +271,7 @@ export const NGRAM_DEFAULT_OPTS = { start: false, end: false, val: '<S>' };
  * @param  {Object}                 pad       String padding options. See example.
  * @return {Array<string>}                    An array of n-gram strings
  */
-export function nGram(
-  tokens: Array<string>,
-  n: number = 2,
-  pad: Object = {}
-): Array<string> {
+export function nGram(tokens: Array<string>, n: number = 2, pad: Object = {}): Array<string> {
   if (n < 1) throw new RangeError('ngram size cannot be smaller than 1');
 
   if (tokens.length < n) {
@@ -298,7 +291,7 @@ export function nGram(
   }
 
   let acc = [];
-  for (let idx = 0; idx < (tokens.length - n + 1); idx++) {
+  for (let idx = 0; idx < tokens.length - n + 1; idx++) {
     acc.push(tokens.slice(idx, idx + n).join(' '));
   }
 
@@ -346,14 +339,14 @@ export function arithmeticMean(input: Array<number>): number {
 export function jackKnife(
   cands: Array<string>,
   ref: string,
-  func: ((x: string, y: string) => number),
-  test: ((x: Array<number>) => number) = arithmeticMean
+  func: (x: string, y: string) => number,
+  test: (x: Array<number>) => number = arithmeticMean,
 ): number {
   if (cands.length < 2) {
     throw new RangeError('Candidate array must contain more than one element');
   }
 
-  const pairs = cands.map(c => func(c, ref));
+  const pairs = cands.map((c) => func(c, ref));
 
   let acc = [];
   for (let idx = 0; idx < pairs.length; idx++) {
@@ -382,13 +375,11 @@ export function jackKnife(
  *                              Defaults to 0.5, i.e. mean f-score
  * @return {number}             Computed f-score
  */
-export function fMeasure(
-  p: number,
-  r: number,
-  beta: number = 0.5
-): number {
+export function fMeasure(p: number, r: number, beta: number = 0.5): number {
   if (p < 0 || p > 1) throw new RangeError('Precision value p must have bounds 0 ≤ p ≤ 1');
   if (r < 0 || r > 1) throw new RangeError('Recall value r must have bounds 0 ≤ r ≤ 1');
+
+  if (p == 0 && r == 0) return 0;
 
   if (beta < 0) {
     throw new RangeError('beta value must be greater than 0');
@@ -411,7 +402,7 @@ export function intersection(a: Array<string>, b: Array<string>): Array<string> 
   const test = new Set(a);
   const ref = new Set(b);
 
-  return Array.from(test).filter(elem => ref.has(elem));
+  return Array.from(test).filter((elem) => ref.has(elem));
 }
 
 /**
@@ -437,12 +428,12 @@ export function lcs(a: Array<string>, b: Array<string>): Array<string> {
   let aEndIdx = a.length - 1;
   let bEndIdx = b.length - 1;
 
-  while (a[startIdx] && b[startIdx] && (a[startIdx] === b[startIdx])) {
+  while (a[startIdx] && b[startIdx] && a[startIdx] === b[startIdx]) {
     start.push(a[startIdx]);
     startIdx++;
   }
 
-  while (a[aEndIdx] && b[bEndIdx] && (a[aEndIdx] === b[bEndIdx])) {
+  while (a[aEndIdx] && b[bEndIdx] && a[aEndIdx] === b[bEndIdx]) {
     end.push(a[aEndIdx]);
     aEndIdx--;
     bEndIdx--;
