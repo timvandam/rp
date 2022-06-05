@@ -197,3 +197,11 @@ export function* concat<T>(...iterables: Iterable<T>[]): Iterable<T> {
     yield* it;
   }
 }
+
+export async function collect<T>(iterable: AsyncIterable<T>): Promise<T[]> {
+  const result: T[] = [];
+  for await (const value of iterable) {
+    result.push(value);
+  }
+  return result;
+}

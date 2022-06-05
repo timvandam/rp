@@ -62,8 +62,9 @@ async function evaluate(language: 'ts' | 'js') {
   for await (const [prediction, json] of zipAsync(predictions, inputs)) {
     if (json.trim().length === 0 || prediction.trim().length === 0) continue;
     const obj = JSON.parse(json) as { input: string; gt: string };
-    const gt = fixSpacing(postprocess(obj.gt));
-    const pred = fixSpacing(postprocess(prediction));
+    const gt = fixSpacing(postprocess(obj.gt.trim()));
+    if (gt.trim().length === 0) continue;
+    const pred = fixSpacing(postprocess(prediction.trim()));
     res = mergeResults(res, computeMetrics(gt, pred));
   }
 

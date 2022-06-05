@@ -49,3 +49,19 @@ export async function pathExists(folderPath: string): Promise<boolean> {
     return false;
   }
 }
+
+export async function* findFilesRecursively(
+  folderPath: string,
+  filter: (filePath: string) => boolean,
+): AsyncIterable<string> {
+  const dir = await opendir(folderPath);
+
+  for await (const file of dir) {
+    const filePath = path.resolve(dir.path, file.name);
+    if (file.isFile()) {
+      if (filter(filePath)) yield filePath;
+    } else if (file.isDirectory()) {
+      yield* findFilesRecursively(path.resolve(dir.path, file.name), filter);
+    }
+  }
+}
