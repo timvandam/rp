@@ -7,7 +7,6 @@ import { workerData } from 'worker_threads';
 import { reportProgress, reportResult, reportTotal } from '../threading';
 import { addTypes } from '../add-types/add-types';
 
-//TODO: If type, install all @types packages to improve type inference
 async function preprocess(): Promise<void> {
   const tsConfigs = workerData as string[];
   reportTotal(tsConfigs.length);
@@ -24,7 +23,12 @@ async function handleProject(project: Project) {
   addTypes(project);
 
   for (const sourceFile of project.getSourceFiles()) {
-    if (sourceFile.getScriptKind() !== ScriptKind.TS) continue;
+    if (
+      sourceFile.getScriptKind() !== ScriptKind.TS ||
+      sourceFile.getDirectoryPath().includes('node_modules')
+    ) {
+      continue;
+    }
     await handleSourceFile(sourceFile);
   }
 }

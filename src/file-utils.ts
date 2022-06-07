@@ -65,3 +65,15 @@ export async function* findFilesRecursively(
     }
   }
 }
+
+export async function* findFoldersAtDepth(rootPath: string, depth: number): AsyncIterable<string> {
+  if (depth === 0) {
+    yield rootPath;
+  } else {
+    for await (const file of await opendir(rootPath)) {
+      if (file.isDirectory()) {
+        yield* findFoldersAtDepth(path.resolve(rootPath, file.name), depth - 1);
+      }
+    }
+  }
+}

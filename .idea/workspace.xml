@@ -5,16 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2608a7e4-e958-4359-b453-3cadeb93dd38" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/add-types/__tests__/add-types.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/add-types/add-types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/install-deps/install-deps.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/evaluate.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/evaluate/evaluate.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/file-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/file-utils.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/get-functions/master.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/get-functions/master.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/get-functions/worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/get-functions/worker.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/threading.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/threading.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,27 +49,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "true",
-    "javascript.nodejs.core.library.configured.version": "16.14.0",
-    "javascript.nodejs.core.library.typings.version": "16.11.38",
-    "last_opened_file_path": "/home/tim/super-iterator",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs.jest.jest_package": "/home/tim/rp/node_modules/jest",
-    "nodejs_interpreter_path": "/home/tim/.nvm/versions/node/v16.14.0/bin/node",
-    "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "/home/tim/rp/node_modules/prettier",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/home/tim/rp/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.highlight.mappings&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.highlight.symlinks&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.date&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.permissions&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.size&quot;: &quot;false&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;16.14.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;16.11.38&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/tim/super-iterator&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs.jest.jest_package&quot;: &quot;/home/tim/rp/node_modules/jest&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;/home/tim/.nvm/versions/node/v16.14.0/bin/node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/home/tim/rp/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/tim/rp/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/py" />
@@ -178,7 +183,12 @@
       <workItem from="1654207146849" duration="6956000" />
       <workItem from="1654245964424" duration="9804000" />
       <workItem from="1654278604452" duration="93000" />
-      <workItem from="1654278711815" duration="34705000" />
+      <workItem from="1654278711815" duration="36646000" />
+      <workItem from="1654433283788" duration="60000" />
+      <workItem from="1654439149203" duration="8075000" />
+      <workItem from="1654454832280" duration="3804000" />
+      <workItem from="1654511965547" duration="4364000" />
+      <workItem from="1654528100226" duration="455000" />
     </task>
     <servers />
   </component>

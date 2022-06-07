@@ -6,7 +6,9 @@ This will take a while
 git clone git@github.com:timvandam/rp.git
 # ↓ this clones ~50gb of typescript repos ↓ 
 cd data && chmod +x ./cloner.sh && ./cloner.sh && cd ..
+npm run install-deps # install dependencies to the repos (required for proper type annotations)
 npm run get-functions # extract TS functions and makes types explicit (const x = 1 -> const x: number = 1)
+sort -u -o ./data/Functions/files.txt ./data/Functions/files_dedup.txt # dedupe, as there might be multiple tsconfig's within the same project
 npm run split-data # split data into train/test/validation
 npm run create-model-files # create train + dev files for UniXcoder finetuning
 # finetune (see Using UniXcoder)

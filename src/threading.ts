@@ -27,7 +27,7 @@ export async function multithread<T, R, A>(
   const workers: (Worker | undefined)[] = Array(maxWorkers).fill(undefined);
   const bar = new MultiBar(
     {
-      format: '{filename}\t| {bar} | {percentage} %\t| eta_formatted\t|{value} / {total}',
+      format: '{filename}\t| {bar} | {percentage} %\t| {eta_formatted}\t| {value} / {total}',
     },
     Presets.shades_grey,
   );

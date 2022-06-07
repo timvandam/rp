@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "install-deps": "tsc -b && node ./dist/install-deps/install-deps.js",
     "get-functions": "tsc -b && node ./dist/get-functions/master.js",
     "split-data": "tsc -b && node ./dist/split-data/split-data.js",
     "evaluate": "tsc -b && node ./dist/evaluate/evaluate.js",
