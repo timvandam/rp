@@ -4,13 +4,16 @@
 This will take a while
 ```bash
 git clone git@github.com:timvandam/rp.git
+
 # ↓ this clones ~50gb of typescript repos ↓ 
 cd data && chmod +x ./cloner.sh && ./cloner.sh && cd ..
-npm run install-deps # install dependencies to the repos (required for explicit types)
 
-# run one of the two (non explicit is much faster)
-npm run get-functions # extract TS functions
-npm run get-functions-explicit # extract TS functions and makes types explicit (const x = 1 -> const x: number = 1)
+# extract TS functions without any transformations (if you want to add explicit types, run the 2 commands below)
+npm run get-functions
+
+# install npm dependencies (with yarn) and get functions with explicit types (eg `const x = 1` is converted to `const x: number = 1`)
+npm run install-deps
+npm run get-functions-explicit 
 
 # dedupe, as there might be multiple tsconfig's within the same project
 # only required if you used get-functions-explicit
@@ -20,6 +23,9 @@ npm run split-data # split data into train/test/validation
 npm run create-model-files # create train + dev files for UniXcoder finetuning
 # finetune (see Using UniXcoder)
 # predict test set (see Using UniXcoder)
+
+npm run postprocess # post process the ground truth and the prediction, preparing them for evaluation
+
 npm run evaluate # runs metrics and reports them
 ```
 
@@ -102,6 +108,23 @@ python ~/ts-vs-js/py/run.py \
   --gradient_accumulation_steps 1 \
   --learning_rate 2e-5 \
   --num_train_epochs 10
+  
+# JS Extra
+python ~/ts-vs-js/py/run.py \
+	--do_train \
+	--do_eval \
+	--model_name_or_path microsoft/unixcoder-base \
+	--train_filename ../data/UniXcoder/train_js.txt \
+	--dev_filename ../data/UniXcoder/dev_js.json \
+  --output_dir saved_models/js_extra \
+  --max_source_length 936 \
+  --max_target_length 64 \
+  --beam_size 3 \
+  --train_batch_size 2 \
+  --eval_batch_size 2 \
+  --gradient_accumulation_steps 1 \
+  --learning_rate 2e-5 \
+  --num_train_epochs 10
 ```
 
 Testing:
@@ -134,9 +157,21 @@ python ~/ts-vs-js/py/run.py \
 python ~/ts-vs-js/py/run.py \
 	--do_test \
 	--model_name_or_path microsoft/unixcoder-base \
-	--load_model_path saved_models/ts/checkpoint-best-acc/pytorch_model.bin \
+	--load_model_path saved_models/js/checkpoint-best-acc/pytorch_model.bin \
 	--test_filename ../data/UniXcoder/test_js.json \
   --output_dir saved_models/js \
+  --max_source_length 936 \
+  --max_target_length 64 \
+  --beam_size 3 \
+  --eval_batch_size 2
+  
+# JS Extra
+python ~/ts-vs-js/py/run.py \
+	--do_test \
+	--model_name_or_path microsoft/unixcoder-base \
+	--load_model_path saved_models/js_extra/checkpoint-best-acc/pytorch_model.bin \
+	--test_filename ../data/UniXcoder/test_js.json \
+  --output_dir saved_models/js_extra \
   --max_source_length 936 \
   --max_target_length 64 \
   --beam_size 3 \

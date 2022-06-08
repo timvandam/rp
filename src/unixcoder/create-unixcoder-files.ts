@@ -10,9 +10,7 @@ import { concat, zip, zipOne } from '../utils';
 async function createFiles() {
   await rm(UNIXCODER_FOLDER, { recursive: true, force: true });
   await mkdir(UNIXCODER_FOLDER, { recursive: true });
-  await createTrainFiles();
-  await createDevFiles();
-  await createTestFiles();
+  await Promise.all([createTrainFiles(), createDevFiles(), createTestFiles()]);
 }
 
 createFiles();
@@ -38,6 +36,8 @@ async function createTrainFiles() {
 
   writeStreamTs.end();
   writeStreamJs.end();
+
+  console.log('Done creating train_js.txt and train_ts.txt');
 }
 
 function createTestFiles() {
@@ -96,4 +96,6 @@ async function createMaskedFiles(name: string) {
 
   writeStreamTs.end();
   writeStreamJs.end();
+
+  console.log(`Done creating ${name}_js.json and ${name}_ts.json`);
 }
