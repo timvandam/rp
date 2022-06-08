@@ -1,58 +1,54 @@
-import { mkdir, writeFile } from 'fs/promises';
+import { writeFile, mkdir } from 'fs/promises';
 import { createHash } from 'crypto';
-import { Project, ScriptKind, ScriptTarget, SourceFile } from 'ts-morph';
+import { Project, ScriptTarget } from 'ts-morph';
 import * as path from 'path';
-import { FUNCTIONS_FOLDER, REPOS_FOLDER } from '../config';
+import { exploreFolder } from '../file-utils';
+import { REPOS_FOLDER, FUNCTIONS_FOLDER } from '../config';
 import { workerData } from 'worker_threads';
 import { reportProgress, reportResult, reportTotal } from '../threading';
-import { addTypes } from '../add-types/add-types';
 
 async function preprocess(): Promise<void> {
-  const tsConfigs = workerData as string[];
-  reportTotal(tsConfigs.length);
-  for (const tsConfigFilePath of tsConfigs) {
-    const project = new Project({ tsConfigFilePath });
-    await handleProject(project);
+  const folders = workerData as string[];
+  reportTotal(folders.length);
+  for (const folder of folders) {
+    await exploreFolder(
+      folder,
+      handleTSFile,
+      (filePath: string) => filePath.endsWith('.ts') && !filePath.endsWith('.d.ts'),
+    );
     reportProgress('increment');
   }
 }
 
 preprocess();
 
-async function handleProject(project: Project) {
-  addTypes(project);
+const sha256 = (str: string) => createHash('sha256').update(str).digest().toString('hex');
 
-  for (const sourceFile of project.getSourceFiles()) {
-    if (
-      sourceFile.getScriptKind() !== ScriptKind.TS ||
-      sourceFile.getDirectoryPath().includes('node_modules')
-    ) {
-      continue;
-    }
-    await handleSourceFile(sourceFile);
-  }
-}
-
-function sha256(str: string) {
-  return createHash('sha256').update(str).digest().toString('hex');
-}
-
-async function handleSourceFile(sourceFile: SourceFile) {
-  const filePath = sourceFile.getFilePath();
+async function handleTSFile(code: string, filePath: string) {
   const dirPath = path.dirname(filePath);
   const relDirPath = path.relative(REPOS_FOLDER, dirPath);
   const outDirPath = path.resolve(FUNCTIONS_FOLDER, relDirPath);
   const fileName = path.basename(filePath, '.ts');
 
-  for (const fn of sourceFile.getFunctions()) {
-    if (!fn.isImplementation()) continue;
-
-    const code = fn.print();
-    const name = fn.getName() || 'anonymous_function';
-    const outFileName = `${fileName}.${name}.${sha256(code).slice(0, 10)}.ts`;
+  await mkdir(outDirPath, { recursive: true });
+  for (const { name, code: tsCode } of getFunctions(code)) {
+    const outFileName = `${fileName}.${name}.${sha256(tsCode).slice(0, 10)}.ts`;
     const outFilePath = path.resolve(outDirPath, outFileName);
-    await mkdir(outDirPath, { recursive: true });
-    await writeFile(outFilePath, code);
+    await writeFile(outFilePath, tsCode);
     reportResult(path.relative(FUNCTIONS_FOLDER, outFilePath));
   }
+}
+
+export function getFunctions(code: string): { name: string; code: string }[] {
+  const project = new Project({ compilerOptions: { target: ScriptTarget.ESNext } });
+  const sourceFile = project.createSourceFile('temp.ts', code);
+
+  return sourceFile
+    .getFunctions()
+    .filter((fn) => fn.isImplementation())
+    .map((fn) => {
+      const code = fn.print().trim();
+      const name = fn.getName() || 'anonymous_function';
+      return { name, code };
+    });
 }

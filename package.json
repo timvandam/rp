@@ -6,6 +6,7 @@
   "scripts": {
     "install-deps": "tsc -b && node ./dist/install-deps/install-deps.js",
     "get-functions": "tsc -b && node ./dist/get-functions/master.js",
+    "get-functions-explicit": "tsc -b && node ./dist/get-functions-explicit/master.js",
     "split-data": "tsc -b && node ./dist/split-data/split-data.js",
     "evaluate": "tsc -b && node ./dist/evaluate/evaluate.js",
     "create-model-files": "tsc -b && node ./dist/unixcoder/create-unixcoder-files.js"

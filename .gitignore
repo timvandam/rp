@@ -4,3 +4,4 @@
 */__pycache__
 /data/Evaluation.json
 /data/train.txt
+/results/**/*.bin

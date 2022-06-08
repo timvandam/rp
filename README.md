@@ -6,9 +6,16 @@ This will take a while
 git clone git@github.com:timvandam/rp.git
 # ↓ this clones ~50gb of typescript repos ↓ 
 cd data && chmod +x ./cloner.sh && ./cloner.sh && cd ..
-npm run install-deps # install dependencies to the repos (required for proper type annotations)
-npm run get-functions # extract TS functions and makes types explicit (const x = 1 -> const x: number = 1)
-sort -u -o ./data/Functions/files.txt ./data/Functions/files_dedup.txt # dedupe, as there might be multiple tsconfig's within the same project
+npm run install-deps # install dependencies to the repos (required for explicit types)
+
+# run one of the two (non explicit is much faster)
+npm run get-functions # extract TS functions
+npm run get-functions-explicit # extract TS functions and makes types explicit (const x = 1 -> const x: number = 1)
+
+# dedupe, as there might be multiple tsconfig's within the same project
+# only required if you used get-functions-explicit
+sort -u -o ./data/Functions/files.txt ./data/Functions/files_dedup.txt
+
 npm run split-data # split data into train/test/validation
 npm run create-model-files # create train + dev files for UniXcoder finetuning
 # finetune (see Using UniXcoder)
@@ -18,16 +25,19 @@ npm run evaluate # runs metrics and reports them
 
 ## Extracting functions
 `npm run get-functions`
+or
+`npm run get-functions-explicit`
 
 Functions need to be extracted from the TypeScript repositories.
 The output files contain the TS function including any leading JSDocs if present (the same data as CodeSearchNet).
 The file name is always `[fileName].[functionName].[hash].ts`.
+The difference between `get-functions` and `functions-explicit` is that `get-functions-explicit` adds type annotations if they are explicit (e.g. `const x = 1` becomes `const x: number = `).
+Note that adding these annotations can take a long time as it relies on the TypeScript compiler.
 
 ## Data splitting
 `npm run split-data`
 
-Data needs to be split into sets.
-A train set, dev set and test set is created.
+A train set, dev set and test set are created.
 The sets are saved as `train.txt`, `dev.txt` and `test.txt` in the folder containing all functions.
 Each line in one of those files references a function.
 The split can be configured inside `config.json`.
@@ -35,7 +45,7 @@ The split can be configured inside `config.json`.
 ## Creating model files
 `npm run create-model-files`
 
-UniXcoder needs some files to be finetuned: `train.txt`, `dev.json`.
+UniXcoder needs some files to be finetuned: `train.txt` and `dev.json`.
 These and `test.json` are generated for both JS and TS with _js and _ts suffixes respectively.
 
 
@@ -50,6 +60,23 @@ python ~/ts-vs-js/py/run.py \
 	--train_filename ../data/UniXcoder/train_ts.txt \
 	--dev_filename ../data/UniXcoder/dev_ts.json \
   --output_dir saved_models/ts \
+  --max_source_length 936 \
+  --max_target_length 64 \
+  --beam_size 3 \
+  --train_batch_size 2 \
+  --eval_batch_size 2 \
+  --gradient_accumulation_steps 1 \
+  --learning_rate 2e-5 \
+  --num_train_epochs 10
+  
+# TS Extra
+python ~/ts-vs-js/py/run.py \
+	--do_train \
+	--do_eval \
+	--model_name_or_path microsoft/unixcoder-base \
+	--train_filename ../data/UniXcoder/train_ts.txt \
+	--dev_filename ../data/UniXcoder/dev_ts.json \
+  --output_dir saved_models/ts_extra \
   --max_source_length 936 \
   --max_target_length 64 \
   --beam_size 3 \
@@ -91,6 +118,18 @@ python ~/ts-vs-js/py/run.py \
   --beam_size 3 \
   --eval_batch_size 2
   
+# TS Extra
+python ~/ts-vs-js/py/run.py \
+	--do_test \
+	--model_name_or_path microsoft/unixcoder-base \
+	--load_model_path saved_models/ts_extra/checkpoint-best-acc/pytorch_model.bin \
+	--test_filename ../data/UniXcoder/test_ts.json \
+  --output_dir saved_models/ts_extra \
+  --max_source_length 936 \
+  --max_target_length 64 \
+  --beam_size 3 \
+  --eval_batch_size 2
+  
 # JS
 python ~/ts-vs-js/py/run.py \
 	--do_test \
@@ -107,5 +146,4 @@ python ~/ts-vs-js/py/run.py \
 ## Evaluation
 `npm run evaluate`
 
-The test script generates a `predictions.txt` file with predictions made by the UniXcoder model for the test set.
-Each line contains the prediction of the exact same line in the test file.
+This script evaluates predictions and outputs metrics.
