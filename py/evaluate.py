@@ -55,8 +55,6 @@ def compute_rouge(line: str, completion: str):
     }
 
 
-
-
 def evaluate_folder(path: Path):
     result = empty_evaluation_obj()
     postprocessed_file = path / 'postprocessed.txt'
@@ -64,15 +62,17 @@ def evaluate_folder(path: Path):
     with postprocessed_file.open() as f:
         for line in f.readlines():
             obj = json.loads(line)
-            gt, gt_tokens, prediction, prediction_tokens = obj["gt"], obj["gtTokens"], obj["prediction"], obj["predictionTokens"]
-            update_evaluation(result,
-                              bleu=sentence_bleu([gt_tokens], prediction_tokens,
-                                                 smoothing_function=SmoothingFunction().method2),
-                              levenshtein=Levenshtein.ratio(gt, prediction),
-                              meteor=meteor_score(references=[gt_tokens], hypothesis=prediction_tokens),
-                              rouge=compute_rouge(gt, prediction),
-                              exact_match=1 if gt.split() == prediction.split() else 0
-                              )
+            gt, gt_tokens, prediction, prediction_tokens = obj["gt"], obj["gtTokens"], obj["prediction"], obj[
+                "predictionTokens"]
+            update_evaluation(
+                result,
+                bleu=sentence_bleu([gt_tokens], prediction_tokens,
+                                   smoothing_function=SmoothingFunction().method2),
+                levenshtein=Levenshtein.ratio(gt, prediction),
+                meteor=meteor_score(references=[gt_tokens], hypothesis=prediction_tokens),
+                rouge=compute_rouge(gt, prediction),
+                exact_match=1 if gt.split() == prediction.split() else 0
+            )
 
     average_evaluation(result)
     return result
@@ -91,4 +91,3 @@ for folder in folders:
     folder_path = Path(folder)
     result = evaluate_folder(folder_path)
     print(json.dumps(result, indent=2))
-

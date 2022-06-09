@@ -5,20 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2608a7e4-e958-4359-b453-3cadeb93dd38" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/blue.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/py/evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/py/evaluate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/ts-extra/predictions.txt" beforeDir="false" afterPath="$PROJECT_DIR$/results/ts-extra/predictions.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/ts-extra/results.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/evaluate.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/rouge/constants.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/rouge/rouge.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/evaluate/rouge/utils.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/postprocessing/postprocess.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/postprocessing/postprocess.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/unixcoder/create-unixcoder-files.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/unixcoder/create-unixcoder-files.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,30 +81,7 @@
       <recent name="$PROJECT_DIR$/data/model/ts/saved_models" />
     </key>
   </component>
-  <component name="RunManager" selected="Jest.destructuring">
-    <configuration name="add-types.test.ts" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="TEST_FILE" />
-      <test-file value="$PROJECT_DIR$/src/add-types/__tests__/add-types.test.ts" />
-      <method v="2" />
-    </configuration>
-    <configuration name="destructuring" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/src/add-types/__tests__/add-types.test.ts" />
-      <test-names>
-        <test-name value="destructuring" />
-      </test-names>
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="npm.evaluate">
     <configuration name="importing types" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
@@ -154,13 +121,33 @@
       </test-names>
       <method v="2" />
     </configuration>
+    <configuration name="evaluate" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="evaluate" />
+      </scripts>
+      <node-interpreter value="$PROJECT_DIR$/../.nvm/versions/node/v16.14.1/bin/node" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="postprocess" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="postprocess" />
+      </scripts>
+      <node-interpreter value="$PROJECT_DIR$/../.nvm/versions/node/v16.14.1/bin/node" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.evaluate" />
+        <item itemvalue="npm.postprocess" />
         <item itemvalue="Jest.simple project" />
         <item itemvalue="Jest.lambda parameters" />
         <item itemvalue="Jest.importing types" />
-        <item itemvalue="Jest.destructuring" />
-        <item itemvalue="Jest.add-types.test.ts" />
       </list>
     </recent_temporary>
   </component>
@@ -203,7 +190,18 @@
       <workItem from="1654694011301" duration="2807000" />
       <workItem from="1654696840268" duration="115000" />
       <workItem from="1654696965376" duration="6431000" />
-      <workItem from="1654718055671" duration="563000" />
+      <workItem from="1654718055671" duration="3308000" />
+      <workItem from="1654726495560" duration="681000" />
+      <workItem from="1654728399178" duration="370000" />
+      <workItem from="1654728804159" duration="1408000" />
+      <workItem from="1654773155023" duration="1281000" />
+      <workItem from="1654778645142" duration="9000" />
+      <workItem from="1654785433199" duration="3000" />
+      <workItem from="1654793667415" duration="24000" />
+      <workItem from="1654793709664" duration="827000" />
+      <workItem from="1654809952039" duration="2896000" />
+      <workItem from="1654812974267" duration="62000" />
+      <workItem from="1654813157938" duration="177000" />
     </task>
     <servers />
   </component>
