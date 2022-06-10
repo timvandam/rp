@@ -3,9 +3,10 @@ import path from 'path';
 import { RESULTS_FOLDER } from '../config';
 import { createInterface } from 'readline';
 import { zipAsync } from '../utils';
-import jsTokens from 'js-tokens';
+import jsTokens, { Token } from 'js-tokens';
 import { pathExists } from '../file-utils';
 import tokenize from 'js-tokens';
+import { countTypes } from './count-types';
 
 async function go(model: 'ts' | 'ts-extra' | 'js' | 'js-extra') {
   console.log('Post processing', model);
@@ -56,12 +57,14 @@ async function go(model: 'ts' | 'ts-extra' | 'js' | 'js-extra') {
     const obj = JSON.parse(json) as { input: string; gt: string };
     const gt = postprocess(obj.gt);
     const prediction = postprocess(pred);
+    const { potential, annotations } = countTypes(obj.input);
     postprocessed.write(
       `${JSON.stringify({
         gt,
         prediction,
         gtTokens: [...tokenize(gt)].map((token) => token.value),
         predictionTokens: [...tokenize(prediction)].map((token) => token.value),
+        typeExplicitness: annotations / potential,
       })}\n`,
     );
   }
@@ -71,12 +74,12 @@ async function go(model: 'ts' | 'ts-extra' | 'js' | 'js-extra') {
 
 async function main() {
   for (const model of ['js', 'js-extra', 'ts', 'ts-extra'] as const) {
-    await go(model)
-    console.log()
+    await go(model);
+    console.log();
   }
 }
 
-export function postprocess(code: string): string {
+function postprocess(code: string): string {
   return code
     .replace(/['"`]<STR_LIT>['"`]/g, '""')
     .replace(/<NUM_LIT>/g, '0')

@@ -1,7 +1,7 @@
 #!/bin/sh
 #SBATCH --job-name="unixcoder"
 #SBATCH --partition=gpu
-#SBATCH --time=15:00:00
+#SBATCH --time=2:00:00
 #SBATCH --cpus-per-task=48
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:2
@@ -24,8 +24,8 @@ srun python py/run.py \
        --max_source_length 936 \
        --max_target_length 64 \
        --beam_size 3 \
-       --train_batch_size 32 \
-       --eval_batch_size 32 \
+       --train_batch_size 4 \
+       --eval_batch_size 4 \
        --gradient_accumulation_steps 1 \
        --learning_rate 2e-5 \
        --num_train_epochs 10

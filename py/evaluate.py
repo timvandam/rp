@@ -2,16 +2,17 @@ import glob
 from pathlib import Path
 import json
 import Levenshtein as Levenshtein
+import numpy as np
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 from nltk.translate.meteor_score import meteor_score
 from rouge_score import rouge_scorer
-
+from matplotlib import pyplot as plt
 
 def empty_evaluation_obj():
     return {
         "n": 0,
         "meteor": 0,
-        "bleu": 0,  # todo: make sure its bleu4
+        "bleu": 0,
         "levenshtein": 0,
         "rouge": {
             "precision": 0,
@@ -59,11 +60,17 @@ def evaluate_folder(path: Path):
     result = empty_evaluation_obj()
     postprocessed_file = path / 'postprocessed.txt'
 
+    # type explicitness for correct and incorrect predictions
+    match_explicitness = []
+    zas_explicitness = []
+
     with postprocessed_file.open() as f:
         for line in f.readlines():
             obj = json.loads(line)
-            gt, gt_tokens, prediction, prediction_tokens = obj["gt"], obj["gtTokens"], obj["prediction"], obj[
-                "predictionTokens"]
+            gt, gt_tokens, prediction, prediction_tokens, type_explicitness = obj["gt"], obj["gtTokens"], obj["prediction"], obj[
+                "predictionTokens"], obj["typeExplicitness"]
+            EM = 1 if gt.split() == prediction.split() else 0
+            (match_explicitness if EM == 1 else zas_explicitness).append(type_explicitness)
             update_evaluation(
                 result,
                 bleu=sentence_bleu([gt_tokens], prediction_tokens,
@@ -71,10 +78,15 @@ def evaluate_folder(path: Path):
                 levenshtein=Levenshtein.ratio(gt, prediction),
                 meteor=meteor_score(references=[gt_tokens], hypothesis=prediction_tokens),
                 rouge=compute_rouge(gt, prediction),
-                exact_match=1 if gt.split() == prediction.split() else 0
+                exact_match=EM
             )
 
     average_evaluation(result)
+
+    plt.title(f"TE-EM {path.name} (avg={np.mean(match_explicitness).round(2)} vs {np.mean(zas_explicitness).round(2)})")
+    plt.hist(match_explicitness, density=True, stacked=True)
+    plt.show()
+
     return result
 
 

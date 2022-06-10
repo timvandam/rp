@@ -9,6 +9,13 @@
           </advancedOptions>
         </fileTransfer>
       </webServer>
+      <webServer id="d50edc83-2f9d-44b8-a6f0-4d7f96531c14" name="blue">
+        <fileTransfer rootFolder="/home/tovandam" accessType="SFTP" host="login.delftblue.tudelft.nl" port="22" sshConfigId="d27b1ae9-0c0d-48c9-be5e-3724154d738f" sshConfig="tovandam@login.delftblue.tudelft.nl:22 agent" authAgent="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>
