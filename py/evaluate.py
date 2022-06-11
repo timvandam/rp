@@ -83,9 +83,9 @@ def evaluate_folder(path: Path):
 
     average_evaluation(result)
 
-    plt.title(f"TE-EM {path.name} (avg={np.mean(match_explicitness).round(2)} vs {np.mean(zas_explicitness).round(2)})")
-    plt.hist(match_explicitness, density=True, stacked=True)
-    plt.show()
+    # plt.title(f"TE-EM {path.name} (avg={np.mean(match_explicitness).round(2)} vs {np.mean(zas_explicitness).round(2)})")
+    # plt.hist(match_explicitness, density=True, stacked=True)
+    # plt.show()
 
     return result
 

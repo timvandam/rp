@@ -2,14 +2,41 @@ import { mkdir, readFile, rm } from 'fs/promises';
 import { FUNCTIONS_FOLDER, UNIXCODER_FOLDER } from '../config';
 import path from 'path';
 import { createWriteStream } from 'fs';
-import { preprocess } from '../preprocessing/preprocess';
+import { preprocess as _preprocess } from '../preprocessing/preprocess';
 import { addMaskComments, getMaskedVariants } from '../masking/statement-masking';
 import { ScriptTarget, ts } from 'ts-morph';
-import { concat, zip, zipOne } from '../utils';
+import { concat, zipOne } from '../utils';
+
+export enum PreservedComments {
+  NONE = 0b00,
+  SINGLE_LINE = 0b01,
+  MULTI_LINE = 0b10,
+  ALL = 0b11,
+}
+
+type PreservedCommentsKey = 'NONE' | 'SINGLE_LINE' | 'MULTI_LINE' | 'ALL'
+
+let PRESERVED_COMMENTS = PreservedComments.NONE;
+if (process.argv[2].startsWith('--comments=')) {
+  const values = process.argv[2].slice('--comments='.length).trim().split(',').map(v => v.trim().toUpperCase()).filter(v => v.length > 0)
+  for (const value of values) {
+    if (value in PreservedComments) {
+      PRESERVED_COMMENTS |= PreservedComments[value as PreservedCommentsKey];
+    } else {
+      console.log(`Invalid option '${process.argv[2]}'`);
+      process.exit(1);
+    }
+  }
+} else {
+  PRESERVED_COMMENTS = PreservedComments.ALL
+}
+
+const preprocess = (code: string) => _preprocess(code, PRESERVED_COMMENTS);
 
 async function createFiles() {
   await rm(UNIXCODER_FOLDER, { recursive: true, force: true });
   await mkdir(UNIXCODER_FOLDER, { recursive: true });
+  console.log(`Creating UniXcoder files. Preserve Comments = ${PreservedComments[PRESERVED_COMMENTS]}`);
   await Promise.all([createTrainFiles(), createDevFiles(), createTestFiles()]);
 }
 

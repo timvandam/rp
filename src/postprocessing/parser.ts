@@ -3,6 +3,110 @@ import { Token } from 'js-tokens';
 const DEBUG = true;
 const log = (...args: Parameters<typeof console.log>) => (DEBUG ? console.log(...args) : void 0);
 
+export type Expression = FunctionDeclaration | VariableDeclaration | Block | string;
+
+type Block = Expression[];
+
+type VariableDeclaration = {
+  name: string;
+  type?: Expression;
+  kind: 'var' | 'let' | 'const';
+  value?: Expression;
+};
+
+function skipWhitespaces(tokens: Token[]): void {
+  while (tokens[0].type === 'WhiteSpace') {
+    tokens.shift();
+  }
+}
+
+function readTokenOfType(tokens: Token[], type: Token['type']): Token | null {
+  const token = tokens[0];
+
+  if (token.type === type) {
+    tokens.shift();
+    return token;
+  }
+
+  return null;
+}
+
+function nextTokenIs(tokens: Token[], token: Token): boolean {
+  return tokens[0].type === token.type && tokens[0].value === token.value;
+}
+
+function nextTokenHasType(tokens: Token[], type: Token['type']): boolean {
+  return tokens[0].type === type;
+}
+
+function consumeNextTokenIfExists(tokens: Token[], token: Token): boolean {
+  if (nextTokenIs(tokens, token)) {
+    tokens.shift();
+    return true;
+  }
+  return false;
+}
+
+export function parseStatement(tokens: Token[]): Expression {
+  skipWhitespaces(tokens);
+
+  const result: Token[] = [];
+
+  while (
+    !nextTokenIs(tokens, { type: 'Punctuator', value: ';' }) &&
+    !nextTokenHasType(tokens, 'LineTerminatorSequence')
+  ) {
+    result.push(tokens[0]);
+    tokens.shift();
+  }
+
+  return result.map((token) => token.value).join('');
+}
+
+export function parseType(tokens: Token[]): Expression {
+  skipWhitespaces(tokens);
+
+  //  TODO
+  return '';
+}
+
+//todo: const x = 1, y = 2;
+export function parseVariableDeclaration(tokens: Token[]): VariableDeclaration | null {
+  skipWhitespaces(tokens);
+  const kind = readTokenOfType(tokens, 'IdentifierName')?.value;
+
+  if (kind === undefined || !(kind === 'var' || kind === 'let' || kind === 'const')) {
+    return null;
+  }
+
+  const name = readTokenOfType(tokens, 'IdentifierName')?.value;
+
+  if (name === undefined) {
+    return null;
+  }
+
+  skipWhitespaces(tokens);
+  let type: Expression | undefined;
+  if (consumeNextTokenIfExists(tokens, { type: 'Punctuator', value: ':' })) {
+    // parse type
+    type = parseType(tokens);
+  }
+
+  skipWhitespaces(tokens);
+  let value: Expression | undefined;
+  if (consumeNextTokenIfExists(tokens, { type: 'Punctuator', value: '=' })) {
+    // parse value
+    value = parseStatement(tokens);
+  }
+
+  return {
+    name,
+    kind,
+    type,
+    value,
+  };
+}
+
 function tokensAreEqual(a: Token | undefined, b: Token): boolean {
   if (a === undefined) return false;
   return a.type === b.type && a.value === b.value;
@@ -26,11 +130,18 @@ export type FunctionDeclaration = {
   name?: string;
   parameters: { name: string; type?: string }[];
   returnType?: string;
-  body: string;
+  body: Block;
 };
 
-export function parseFunction(tokens: Token[]): FunctionDeclaration | null {
+//TODO: support partial function
+export function parseFunction(tokens: Token[]): FunctionDeclaration {
   tokens = [...tokens];
+  const result: FunctionDeclaration = {
+    name: undefined,
+    parameters: [],
+    returnType: undefined,
+    body: [],
+  };
 
   const skipWhitespaces = () => {
     while (tokens.length > 0 && ['WhiteSpace', 'LineTerminatorSequence'].includes(tokens[0].type)) {
@@ -42,22 +153,21 @@ export function parseFunction(tokens: Token[]): FunctionDeclaration | null {
 
   if (tokens[0].type !== 'IdentifierName' || tokens[0].value !== 'function') {
     log('No `function` keyword');
-    return null;
+    return result;
   }
   tokens.shift();
   skipWhitespaces();
 
   const hasName = tokens[0].type === 'IdentifierName';
-  let name: string | undefined = undefined;
   if (hasName) {
-    name = tokens[0].value;
+    result.name = tokens[0].value;
     tokens.shift();
     skipWhitespaces();
   }
 
   if (!tokensAreEqual(tokens[0], { type: 'Punctuator', value: '(' })) {
     log('No opening (');
-    return null;
+    return result;
   }
   tokens.shift();
   skipWhitespaces();
@@ -68,7 +178,7 @@ export function parseFunction(tokens: Token[]): FunctionDeclaration | null {
 
     if (tokens[0].type !== 'IdentifierName') {
       log('No parameter name');
-      return null;
+      return result;
     }
 
     const paramName = tokens[0].value;
@@ -118,11 +228,12 @@ export function parseFunction(tokens: Token[]): FunctionDeclaration | null {
     skipWhitespaces();
   }
 
+  //TODO: Parse
   const bodyTokens: Token[] = [];
   if (!tokensAreEqual(tokens[0], { type: 'Punctuator', value: '{' })) {
     log(tokens);
     log('No body');
-    return null;
+    return result;
   }
   tokens.shift();
 
@@ -140,18 +251,8 @@ export function parseFunction(tokens: Token[]): FunctionDeclaration | null {
 
   if (level !== 0) {
     log('Unclosed function');
-    return null;
+    return result;
   }
 
-  const body = bodyTokens
-    .slice(0, -1)
-    .map((token) => token.value)
-    .join('');
-
-  return {
-    name,
-    body,
-    returnType,
-    parameters,
-  };
+  return result;
 }

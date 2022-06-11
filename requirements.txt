@@ -17,10 +17,12 @@ regex==2022.4.24
 requests==2.27.1
 six==1.16.0
 tokenizers==0.12.1
-torch==1.11.0+cu113
+torch==1.11.0
 torchaudio==0.11.0
 torchvision==0.12.0
 tqdm==4.64.0
 transformers==4.19.2
 typing_extensions==4.2.0
 urllib3==1.26.9
+nltk==3.7
+rouge_score==0.0.4

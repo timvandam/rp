@@ -3,12 +3,12 @@ import path from 'path';
 import { RESULTS_FOLDER } from '../config';
 import { createInterface } from 'readline';
 import { zipAsync } from '../utils';
-import jsTokens, { Token } from 'js-tokens';
 import { pathExists } from '../file-utils';
 import tokenize from 'js-tokens';
 import { countTypes } from './count-types';
+import {removeComments} from "../masking/statement-masking";
 
-async function go(model: 'ts' | 'ts-extra' | 'js' | 'js-extra') {
+async function go(model: 'ts' | 'ts-extra' | 'js' | 'js-extra' | 'ts-comments' | 'js-comments' | 'ts-jsdoc' | 'js-jsdoc') {
   console.log('Post processing', model);
 
   if (!(await pathExists(RESULTS_FOLDER))) {
@@ -73,19 +73,23 @@ async function go(model: 'ts' | 'ts-extra' | 'js' | 'js-extra') {
 }
 
 async function main() {
-  for (const model of ['js', 'js-extra', 'ts', 'ts-extra'] as const) {
+  for (const model of ['js', 'js-extra', 'ts', 'ts-extra', 'ts-comments', 'js-comments', 'ts-jsdoc', 'js-jsdoc'] as const) {
     await go(model);
     console.log();
   }
 }
 
 function postprocess(code: string): string {
-  return code
+  if (code.includes('{')) code = code.slice(0, code.indexOf('{') + 1)
+  if (code.includes('</s>')) code = code.slice(0, code.indexOf('</s>'))
+  code = code
     .replace(/['"`]<STR_LIT>['"`]/g, '""')
     .replace(/<NUM_LIT>/g, '0')
     .replace(/\s+/g, ' ')
     .replace(/[\r\n]+/, '\n')
-    .trim();
+  //TODO:Remove types in both GT and P
+  code = removeComments(code).trim()
+  return code
 }
 
 main();

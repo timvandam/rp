@@ -132,3 +132,35 @@ export function countTypes(code: string): { annotations: number; potential: numb
 
   return result;
 }
+
+export function _countTypes(code: string): { annotations: number; potential: number } {
+  let annotations = 0;
+  let potential = 0;
+
+  //TODO:Re-consider \s. Should it be
+  const FUNCTION_SIGNATURE = /function\s*\w+?\s*\((?<parameters>[^)]*)\)\s*(?<returnType>:)?/g;
+  const PARAMETER = /\s*\w+(?<paramType>:)?,?/g;
+  for (const match of code.matchAll(FUNCTION_SIGNATURE)) {
+    // Return Type
+    potential++;
+    if (match.groups?.returnType) {
+      annotations++;
+    }
+
+    const parameters = match.groups?.parameters;
+    if (!parameters) continue;
+    potential += parameters.split(',').length + 1;
+
+    for (const match of parameters.matchAll(PARAMETER)) {
+      potential++;
+      if (match.groups?.paramType) {
+        annotations++;
+      }
+    }
+  }
+
+  //TODO: Exclude function bodys
+  const VARIABLE_DECLARATION = /a/g;
+
+  return { annotations, potential };
+}

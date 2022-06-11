@@ -1,10 +1,19 @@
-import tokenize, { Token } from 'js-tokens';
-import { filter, map, not } from '../utils';
+import tokenize, {Token} from 'js-tokens';
+import {filter, not} from '../utils';
+import {PreservedComments} from "../unixcoder/create-unixcoder-files";
 
-export function preprocess(code: string) {
+export function preprocess(code: string, preservedComments: PreservedComments) {
   let tokens = tokenize(code);
   tokens = replaceTemplateStrings(tokens);
-  tokens = filter(tokens, not(isComment));
+
+  if ((preservedComments & PreservedComments.MULTI_LINE) === 0) {
+    tokens = filter(tokens, not(isMultiLineComment))
+  }
+
+  if ((preservedComments & PreservedComments.SINGLE_LINE) === 0) {
+    tokens = filter(tokens, not(isSingleLineComment))
+  }
+
   tokens = removeDoubleWhitespaces(tokens);
 
   return [...stringifyTokens(tokens)].join('').trim();
@@ -33,14 +42,22 @@ function isComment(token: Token) {
   return token.type === 'MultiLineComment' || token.type === 'SingleLineComment';
 }
 
+function isSingleLineComment(token :Token): boolean {
+  return token.type === 'SingleLineComment'
+}
+
+function isMultiLineComment(token :Token): boolean {
+  return token.type === 'MultiLineComment'
+}
+
 function* stringifyTokens(tokens: Iterable<Token>) {
   for (const token of tokens) {
     if (token.type === 'StringLiteral' || token.type === 'NoSubstitutionTemplate') {
       const startQuote = token.value[0];
       const endQuote = token.value[token.value.length - 1];
       yield `${startQuote}<STR_LIT>${endQuote}`;
-    } else if (token.type === 'MultiLineComment' || token.type === 'SingleLineComment') {
-      yield '';
+    } else if (token.type === 'MultiLineComment') {
+      yield token.value.replace(/\n/g, '<EOL>');
     } else if (token.type === 'NumericLiteral') {
       yield '<NUM_LIT>';
     } else if (token.type === 'LineTerminatorSequence') {

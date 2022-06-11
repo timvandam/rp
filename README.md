@@ -20,7 +20,7 @@ npm run get-functions-explicit
 sort -u -o ./data/Functions/files.txt ./data/Functions/files_dedup.txt
 
 npm run split-data # split data into train/test/validation
-npm run create-model-files # create train + dev files for UniXcoder finetuning
+npm run create-model-files [-- --preserve-comments] # create train + dev files for UniXcoder finetuning
 # finetune (see Using UniXcoder)
 # predict test set (see Using UniXcoder)
 
@@ -91,6 +91,23 @@ python ~/ts-vs-js/py/run.py \
   --gradient_accumulation_steps 1 \
   --learning_rate 2e-5 \
   --num_train_epochs 10
+
+# TS Comments
+python ~/ts-vs-js/py/run.py \
+	--do_train \
+	--do_eval \
+	--model_name_or_path microsoft/unixcoder-base \
+	--train_filename ../data/UniXcoder/train_ts.txt \
+	--dev_filename ../data/UniXcoder/dev_ts.json \
+  --output_dir saved_models/ts-comments \
+  --max_source_length 936 \
+  --max_target_length 64 \
+  --beam_size 3 \
+  --train_batch_size 2 \
+  --eval_batch_size 2 \
+  --gradient_accumulation_steps 1 \
+  --learning_rate 2e-5 \
+  --num_train_epochs 10
   
 # JS
 python ~/ts-vs-js/py/run.py \
@@ -117,6 +134,23 @@ python ~/ts-vs-js/py/run.py \
 	--train_filename ../data/UniXcoder/train_js.txt \
 	--dev_filename ../data/UniXcoder/dev_js.json \
   --output_dir saved_models/js_extra \
+  --max_source_length 936 \
+  --max_target_length 64 \
+  --beam_size 3 \
+  --train_batch_size 2 \
+  --eval_batch_size 2 \
+  --gradient_accumulation_steps 1 \
+  --learning_rate 2e-5 \
+  --num_train_epochs 10
+  
+# JS Comments
+python ~/ts-vs-js/py/run.py \
+	--do_train \
+	--do_eval \
+	--model_name_or_path microsoft/unixcoder-base \
+	--train_filename ../data/UniXcoder/train_js.txt \
+	--dev_filename ../data/UniXcoder/dev_js.json \
+  --output_dir saved_models/js-comments \
   --max_source_length 936 \
   --max_target_length 64 \
   --beam_size 3 \
@@ -172,6 +206,18 @@ python ~/ts-vs-js/py/run.py \
 	--load_model_path saved_models/js_extra/checkpoint-best-acc/pytorch_model.bin \
 	--test_filename ../data/UniXcoder/test_js.json \
   --output_dir saved_models/js_extra \
+  --max_source_length 936 \
+  --max_target_length 64 \
+  --beam_size 3 \
+  --eval_batch_size 2
+  
+# JS Comments
+python ~/ts-vs-js/py/run.py \
+	--do_test \
+	--model_name_or_path microsoft/unixcoder-base \
+	--load_model_path saved_models/js-comments/checkpoint-best-acc/pytorch_model.bin \
+	--test_filename ../data/UniXcoder/test_js.json \
+  --output_dir saved_models/js-comments \
   --max_source_length 936 \
   --max_target_length 64 \
   --beam_size 3 \
