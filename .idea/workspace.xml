@@ -5,30 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2608a7e4-e958-4359-b453-3cadeb93dd38" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/blue-big-ts.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/blue-big-js.sh" beforeDir="false" afterPath="$PROJECT_DIR$/blue-big-js.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js-singleline-comments.sh" beforeDir="false" afterPath="$PROJECT_DIR$/js-singleline-comments.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/js/dev.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/js/dev_js.json" beforeDir="false" afterPath="$PROJECT_DIR$/results/js/dev_js.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/js/dev_ts.json" beforeDir="false" afterPath="$PROJECT_DIR$/results/js/dev_ts.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/js/files.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/js/predictions.txt" beforeDir="false" afterPath="$PROJECT_DIR$/results/js/predictions.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/js/test.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/js/test_js.json" beforeDir="false" afterPath="$PROJECT_DIR$/results/js/test_js.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/js/test_ts.json" beforeDir="false" afterPath="$PROJECT_DIR$/results/js/test_ts.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/js/train.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/ts/dev.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/ts/dev_js.json" beforeDir="false" afterPath="$PROJECT_DIR$/results/ts/dev_js.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/ts/dev_ts.json" beforeDir="false" afterPath="$PROJECT_DIR$/results/ts/dev_ts.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/ts/files.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/ts/postprocessed.txt" beforeDir="false" afterPath="$PROJECT_DIR$/results/ts/postprocessed.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/ts/predictions.txt" beforeDir="false" afterPath="$PROJECT_DIR$/results/ts/predictions.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/ts/test.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/ts/test_js.json" beforeDir="false" afterPath="$PROJECT_DIR$/results/ts/test_js.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/ts/test_ts.json" beforeDir="false" afterPath="$PROJECT_DIR$/results/ts/test_ts.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/results/ts/train.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/postprocessing/postprocess.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/postprocessing/postprocess.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue-big-js-comments.sh" beforeDir="false" afterPath="$PROJECT_DIR$/blue-big-js-comments.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue-big-js-single.sh" beforeDir="false" afterPath="$PROJECT_DIR$/blue-big-js-single.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue-big-ts-comments.sh" beforeDir="false" afterPath="$PROJECT_DIR$/blue-big-ts-comments.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue-big-ts-single.sh" beforeDir="false" afterPath="$PROJECT_DIR$/blue-big-ts-single.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/get-functions/master.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/get-functions/master.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/postprocessing/count-types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/postprocessing/count-types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -278,7 +262,8 @@
       <workItem from="1654984649150" duration="3653000" />
       <workItem from="1655029784676" duration="603000" />
       <workItem from="1655031368760" duration="411000" />
-      <workItem from="1655056766718" duration="1431000" />
+      <workItem from="1655056766718" duration="3433000" />
+      <workItem from="1655066181109" duration="3656000" />
     </task>
     <servers />
   </component>

@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#SBATCH --job-name="unixcoder big comments ts"
+#SBATCH --job-name="unixcoder big comments js"
 #SBATCH --partition=gpu
 #SBATCH --time=23:59:00
 #SBATCH --ntasks=1
@@ -18,9 +18,9 @@ python py/run.py \
      	--do_train \
      	--do_eval \
      	--model_name_or_path microsoft/unixcoder-base \
-     	--train_filename UniXcoder-big-comments/train_ts.txt \
-     	--dev_filename UniXcoder-big-comments/dev_ts.json \
-       --output_dir /scratch/tovandam/saved_models/ts-big-comments \
+     	--train_filename UniXcoder-big-comments/train_js.txt \
+     	--dev_filename UniXcoder-big-comments/dev_js.json \
+       --output_dir /scratch/tovandam/saved_models/js-big-comments \
        --max_source_length 936 \
        --max_target_length 64 \
        --beam_size 3 \
@@ -33,9 +33,9 @@ python py/run.py \
 python py/run.py \
 	--do_test \
 	--model_name_or_path microsoft/unixcoder-base \
-	--load_model_path /scratch/tovandam/saved_models/ts-big-comments/checkpoint-best-acc/pytorch_model.bin \
-	--test_filename UniXcoder-big-comments/test_ts.json \
-  --output_dir /scratch/tovandam/saved_models/ts-big-comments \
+	--load_model_path /scratch/tovandam/saved_models/js-big-comments/checkpoint-best-acc/pytorch_model.bin \
+	--test_filename UniXcoder-big-comments/test_js.json \
+  --output_dir /scratch/tovandam/saved_models/js-big-comments \
   --max_source_length 936 \
   --max_target_length 64 \
   --beam_size 3 \
