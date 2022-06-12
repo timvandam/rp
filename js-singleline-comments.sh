@@ -21,7 +21,7 @@ python py/run.py \
      	--model_name_or_path microsoft/unixcoder-base \
      	--train_filename UniXcoder-single/train_js.txt \
      	--dev_filename UniXcoder-single/dev_js.json \
-       --output_dir saved_models/js-single \
+       --output_dir /scratch/tovandam/saved_models/js-single \
        --max_source_length 936 \
        --max_target_length 64 \
        --beam_size 3 \
@@ -34,9 +34,9 @@ python py/run.py \
 python py/run.py \
 	--do_test \
 	--model_name_or_path microsoft/unixcoder-base \
-	--load_model_path saved_models/js-single/checkpoint-best-acc/pytorch_model.bin \
+	--load_model_path /scratch/tovandam/saved_models/js-single/checkpoint-best-acc/pytorch_model.bin \
 	--test_filename UniXcoder-single/test_js.json \
-  --output_dir saved_models/js-single \
+  --output_dir /scratch/tovandam/saved_models/js-single \
   --max_source_length 936 \
   --max_target_length 64 \
   --beam_size 3 \

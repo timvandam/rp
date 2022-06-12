@@ -20,7 +20,7 @@ python py/run.py \
      	--model_name_or_path microsoft/unixcoder-base \
      	--train_filename UniXcoder-big/train_js.txt \
      	--dev_filename UniXcoder-big/dev_js.json \
-       --output_dir saved_models/js-big \
+       --output_dir /scratch/tovandam/saved_models/js-big \
        --max_source_length 936 \
        --max_target_length 64 \
        --beam_size 3 \
@@ -33,9 +33,9 @@ python py/run.py \
 python py/run.py \
 	--do_test \
 	--model_name_or_path microsoft/unixcoder-base \
-	--load_model_path saved_models/js-big/checkpoint-best-acc/pytorch_model.bin \
+	--load_model_path /scratch/tovandam/saved_models/js-big/checkpoint-best-acc/pytorch_model.bin \
 	--test_filename UniXcoder-big/test_js.json \
-  --output_dir saved_models/js-big \
+  --output_dir /scratch/tovandam/saved_models/js-big \
   --max_source_length 936 \
   --max_target_length 64 \
   --beam_size 3 \

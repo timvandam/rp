@@ -7,14 +7,10 @@ import { pathExists } from '../file-utils';
 import tokenize from 'js-tokens';
 import { countTypes } from './count-types';
 import {removeComments} from "../masking/statement-masking";
+import {opendir} from "fs/promises";
 
-async function go(model: 'ts' | 'ts-extra' | 'js' | 'js-extra' | 'ts-comments' | 'js-comments' | 'ts-jsdoc' | 'js-jsdoc') {
+async function go(model: string) {
   console.log('Post processing', model);
-
-  if (!(await pathExists(RESULTS_FOLDER))) {
-    console.log(`No results folder (${RESULTS_FOLDER})`);
-    return;
-  }
 
   const modelFolderPath = path.resolve(RESULTS_FOLDER, model);
 
@@ -73,9 +69,16 @@ async function go(model: 'ts' | 'ts-extra' | 'js' | 'js-extra' | 'ts-comments' |
 }
 
 async function main() {
-  for (const model of ['js', 'js-extra', 'ts', 'ts-extra', 'ts-comments', 'js-comments', 'ts-jsdoc', 'js-jsdoc'] as const) {
-    await go(model);
-    console.log();
+  if (!(await pathExists(RESULTS_FOLDER))) {
+    console.log(`No results folder (${RESULTS_FOLDER})`);
+    return;
+  }
+
+  for await  (const file of await opendir(RESULTS_FOLDER)) {
+    if (file.isDirectory()) {
+      await go(file.name)
+      console.log()
+    }
   }
 }
 
