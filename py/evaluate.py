@@ -33,6 +33,16 @@ def average_evaluation(evaluation):
     evaluation["exact_match"] /= evaluation["n"]
 
 
+def round_evaluation(evaluation):
+    evaluation["meteor"] = round(evaluation["meteor"] * 100, 2)
+    evaluation["bleu"] = round(evaluation["bleu"] * 100, 2)
+    evaluation["levenshtein"] = round(evaluation["levenshtein"] * 100, 2)
+    evaluation["rouge"]["precision"] = round(evaluation["rouge"]["precision"] * 100, 2)
+    evaluation["rouge"]["recall"] = round(evaluation["rouge"]["recall"] * 100, 2)
+    evaluation["rouge"]["f1"] = round(evaluation["rouge"]["f1"] * 100, 2)
+    evaluation["exact_match"] = round(evaluation["exact_match"] * 100, 2)
+
+
 def update_evaluation(evaluation, meteor, bleu, levenshtein, rouge, exact_match):
     evaluation["levenshtein"] += levenshtein
     evaluation["bleu"] += bleu
@@ -82,6 +92,7 @@ def evaluate_folder(path: Path):
             )
 
     average_evaluation(result)
+    round_evaluation(result)
 
     # plt.title(f"TE-EM {path.name} (avg={np.mean(match_explicitness).round(2)} vs {np.mean(zas_explicitness).round(2)})")
     # plt.hist(match_explicitness, density=True, stacked=True)
@@ -102,4 +113,5 @@ for folder in folders:
     print("Evaluating folder " + folder)
     folder_path = Path(folder)
     result = evaluate_folder(folder_path)
-    print(json.dumps(result, indent=2))
+    # print(json.dumps(result, indent=2))
+    print(f'{folder} & {result["exact_match"]} & {result["levenshtein"]} & {result["bleu"]} & {result["rouge"]["f1"]} & {result["meteor"]}')
