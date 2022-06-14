@@ -5,7 +5,7 @@
 #SBATCH --time=23:59:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --gpus-per-task=2
+#SBATCH --gpus-per-task=1
 #SBATCH --mem-per-cpu=12G
 
 module load 2022r2
@@ -20,12 +20,12 @@ python py/run.py \
      	--model_name_or_path microsoft/unixcoder-base \
      	--train_filename UniXcoder-big-single/train_js.txt \
      	--dev_filename UniXcoder-big-single/dev_js.json \
-       --output_dir /scratch/tovandam/saved_models/js-big-single \
+       --output_dir /scratch/tovandam/saved_models/js-big-single-2 \
        --max_source_length 936 \
        --max_target_length 64 \
        --beam_size 3 \
-       --train_batch_size 16 \
-       --eval_batch_size 16 \
+       --train_batch_size 2 \
+       --eval_batch_size 2 \
        --gradient_accumulation_steps 1 \
        --learning_rate 2e-5 \
        --num_train_epochs 10
@@ -33,9 +33,9 @@ python py/run.py \
 python py/run.py \
 	--do_test \
 	--model_name_or_path microsoft/unixcoder-base \
-	--load_model_path /scratch/tovandam/saved_models/js-big-single/checkpoint-best-acc/pytorch_model.bin \
+	--load_model_path /scratch/tovandam/saved_models/js-big-single-2/checkpoint-best-acc/pytorch_model.bin \
 	--test_filename UniXcoder-big-single/test_js.json \
-  --output_dir /scratch/tovandam/saved_models/js-big-single \
+  --output_dir /scratch/tovandam/saved_models/js-big-single-2 \
   --max_source_length 936 \
   --max_target_length 64 \
   --beam_size 3 \
