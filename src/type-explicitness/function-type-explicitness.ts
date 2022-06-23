@@ -4,7 +4,7 @@ import { countTypes } from './count-types';
 import {collect, enumerate, round} from '../utils';
 import {getTsFilesRecursively} from "../split-data/get-ts-files-recursively";
 
-const folder = process.argv[3];
+const folder = process.argv[2];
 
 if (typeof folder !== 'string') {
   console.log('You must provide a folder to search as argv1')
