@@ -1,9 +1,12 @@
 import * as path from 'path';
-import { ALLOWED_CPUS, FUNCTIONS_FOLDER, REPOS_FOLDER } from '../config';
+import { ALLOWED_CPUS } from '../config';
 import { multithread } from '../threading';
 import { batchBySize, collect } from '../utils';
 import { createWriteStream } from 'fs';
 import { mkdir, opendir } from 'fs/promises';
+
+export const REPOS_FOLDER = './data/Repos'
+export const FUNCTIONS_FOLDER = './data/Functions'
 
 async function startWorkers() {
   await mkdir(FUNCTIONS_FOLDER, { recursive: true });
@@ -13,22 +16,18 @@ async function startWorkers() {
 
   console.log(`Found ${tsConfigs.length} projects. Adding types and extracting functions...`);
 
-  const writeStream = createWriteStream(path.resolve(FUNCTIONS_FOLDER, 'files.txt'), 'utf8');
   await multithread(
     batchBySize(tsConfigs, 2),
     path.resolve(__dirname, './worker.js'),
-    (fileName: string) => {
-      writeStream.write(`${fileName}\n`);
-      return 0;
-    },
+    () => 0,
     0,
     ALLOWED_CPUS,
   );
-
-  writeStream.end();
 }
 
-startWorkers();
+if (require.main === module) {
+  startWorkers();
+}
 
 /**
  * Find tsconfig.json files. Only yields leaf tsconfig.json files.

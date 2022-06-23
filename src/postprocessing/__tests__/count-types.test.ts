@@ -1,4 +1,4 @@
-import { countTypes } from '../count-types';
+import { countTypes } from '../../type-explicitness/count-types';
 
 describe('countTypes', () => {
   it.each([

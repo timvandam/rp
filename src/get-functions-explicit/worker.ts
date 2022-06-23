@@ -1,8 +1,8 @@
 import { mkdir, writeFile } from 'fs/promises';
 import { createHash } from 'crypto';
-import { Project, ScriptKind, ScriptTarget, SourceFile } from 'ts-morph';
+import { Project, ScriptKind, SourceFile } from 'ts-morph';
 import * as path from 'path';
-import { FUNCTIONS_FOLDER, REPOS_FOLDER } from '../config';
+import { FUNCTIONS_FOLDER, REPOS_FOLDER } from './master';
 import { workerData } from 'worker_threads';
 import { reportProgress, reportResult, reportTotal } from '../threading';
 import { addTypes } from '../add-types/add-types';

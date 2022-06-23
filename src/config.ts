@@ -6,10 +6,6 @@ const config: Record<string, any> = JSON.parse(
   readFileSync(path.resolve(__dirname, '../config.json'), 'utf8'),
 );
 
-export const REPOS_FOLDER: string = config.REPOS_FOLDER;
-export const FUNCTIONS_FOLDER: string = config.FUNCTIONS_FOLDER;
-export const UNIXCODER_FOLDER: string = config.UNIXCODER_FOLDER;
-export const RESULTS_FOLDER: string = config.RESULTS_FOLDER;
 export const ALLOWED_CPUS: number = Math.floor(os.cpus().length * config.ALLOWED_CPUS);
 export const LINE_MASK_CHANCE: number = config.LINE_MASK_CHANCE;
 export const RANDOM_SEED: string = config.RANDOM_SEED;

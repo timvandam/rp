@@ -8,12 +8,12 @@ export function randInt(min: number, max: number, random = Math.random.bind(Math
   return Math.floor(random() * (max - min + 1)) + min;
 }
 
-export function randChoice<T>(choices: T[]): T {
+export function randChoice<T>(choices: T[], random = Math.random): T {
   if (choices.length === 0) {
     throw new Error('There must be at least one choice');
   }
 
-  return choices[randInt(0, choices.length - 1)];
+  return choices[randInt(0, choices.length - 1, random)];
 }
 
 export function randChoiceWeighted<T>(
@@ -44,7 +44,11 @@ export function randChoices<T>(choices: T[], n: number, random = Math.random.bin
     throw new Error('Can not choose more than the amount of choices');
   }
 
-  return uniqueRandInts(n, 0, choices.length - 1, random).map((i) => choices[i]);
+  if (n === 0) {
+    return []
+  }
+
+  return uniqueRandInts(n, 0, choices.length - 1, random).sort((a, b) => a - b).map((i) => choices[i]);
 }
 
 export function range(from: number, to: number) {
@@ -204,4 +208,12 @@ export async function collect<T>(iterable: AsyncIterable<T>): Promise<T[]> {
     result.push(value);
   }
   return result;
+}
+
+export function round(num: number, decimals: number) {
+  return Math.round(num * 10 ** decimals) / 10 ** decimals;
+}
+
+export function clamp(low: number, high: number, num: number): number {
+  return Math.min(Math.max(num, low), high);
 }

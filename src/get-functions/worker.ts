@@ -3,9 +3,9 @@ import { createHash } from 'crypto';
 import { Project, ScriptTarget } from 'ts-morph';
 import * as path from 'path';
 import { exploreFolder } from '../file-utils';
-import { REPOS_FOLDER, FUNCTIONS_FOLDER } from '../config';
+import { REPOS_FOLDER, FUNCTIONS_FOLDER } from './master';
 import { workerData } from 'worker_threads';
-import { reportProgress, reportResult, reportTotal } from '../threading';
+import { reportProgress, reportTotal } from '../threading';
 
 async function preprocess(): Promise<void> {
   const folders = workerData as string[];
@@ -32,10 +32,11 @@ async function handleTSFile(code: string, filePath: string) {
 
   await mkdir(outDirPath, { recursive: true });
   for (const { name, code: tsCode } of getFunctions(code)) {
-    const outFileName = `${fileName}.${name}.${sha256(tsCode).slice(0, 10)}.ts`;
-    const outFilePath = path.resolve(outDirPath, outFileName);
+    // const hash = sha256(tsCode);
+    const outFileName = `${name}.ts`;
+    const outFilePath = path.resolve(outDirPath, fileName, outFileName);
+    await mkdir(path.resolve(outDirPath, fileName), { recursive: true })
     await writeFile(outFilePath, tsCode);
-    reportResult(path.relative(FUNCTIONS_FOLDER, outFilePath));
   }
 }
 

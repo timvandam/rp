@@ -2,7 +2,7 @@ import tokenize, {Token} from 'js-tokens';
 import {filter, not} from '../utils';
 import {PreservedComments} from "../unixcoder/create-unixcoder-files";
 
-export function preprocess(code: string, preservedComments: PreservedComments) {
+export function preprocess(code: string, preservedComments: PreservedComments, replaceLiterals: boolean) {
   let tokens = tokenize(code);
   tokens = replaceTemplateStrings(tokens);
 
@@ -16,7 +16,7 @@ export function preprocess(code: string, preservedComments: PreservedComments) {
 
   tokens = removeDoubleWhitespaces(tokens);
 
-  return [...stringifyTokens(tokens)].join('').trim();
+  return [...stringifyTokens(tokens, replaceLiterals)].join('');
 }
 
 function* replaceTemplateStrings(tokens: Iterable<Token>): Iterable<Token> {
@@ -38,29 +38,29 @@ function* replaceTemplateStrings(tokens: Iterable<Token>): Iterable<Token> {
   }
 }
 
-function isComment(token: Token) {
+export function isComment(token: Token) {
   return token.type === 'MultiLineComment' || token.type === 'SingleLineComment';
 }
 
-function isSingleLineComment(token :Token): boolean {
+export function isSingleLineComment(token :Token): boolean {
   return token.type === 'SingleLineComment'
 }
 
-function isMultiLineComment(token :Token): boolean {
+export function isMultiLineComment(token :Token): boolean {
   return token.type === 'MultiLineComment'
 }
 
-function* stringifyTokens(tokens: Iterable<Token>) {
+function* stringifyTokens(tokens: Iterable<Token>, replaceLiterals: boolean) {
   for (const token of tokens) {
-    if (token.type === 'StringLiteral' || token.type === 'NoSubstitutionTemplate') {
+    if ((token.type === 'StringLiteral' || token.type === 'NoSubstitutionTemplate') && replaceLiterals) {
       const startQuote = token.value[0];
       const endQuote = token.value[token.value.length - 1];
       yield `${startQuote}<STR_LIT>${endQuote}`;
-    } else if (token.type === 'MultiLineComment') {
+    } else if (token.type === 'MultiLineComment' && replaceLiterals) {
       yield token.value.replace(/\n/g, '<EOL>');
-    } else if (token.type === 'NumericLiteral') {
+    } else if (token.type === 'NumericLiteral' && replaceLiterals) {
       yield '<NUM_LIT>';
-    } else if (token.type === 'LineTerminatorSequence') {
+    } else if (token.type === 'LineTerminatorSequence' && replaceLiterals) {
       yield '<EOL>';
     } else if (
       token.type === 'TemplateHead' ||

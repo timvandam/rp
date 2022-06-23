@@ -7,8 +7,11 @@
     "install-deps": "tsc -b && node ./dist/install-deps/install-deps.js",
     "get-functions": "tsc -b && node ./dist/get-functions/master.js",
     "get-functions-explicit": "tsc -b && node ./dist/get-functions-explicit/master.js",
+    "function-type-explicitness": "tsc -b && node ./dist/type-explicitness/function-type-explicitness.js",
     "split-data": "tsc -b && node ./dist/split-data/split-data.js",
     "create-model-files": "tsc -b && node ./dist/unixcoder/create-unixcoder-files.js",
+    "create-unixcoder-files": "npm run create-model-files",
+    "create-incoder-files": "npm run create-model-files -- --open=\"\" --close=\"\" --replaceLiterals=0",
     "postprocess": "tsc -b && node ./dist/postprocessing/postprocess.js",
     "evaluate": "python ./py/evaluate.py"
   },
@@ -31,8 +34,7 @@
     "jest": "^28.1.0",
     "prettier": "^2.6.2",
     "ts-jest": "^28.0.3",
-    "ts-node": "^10.7.0",
-    "typescript": "^4.6.4"
+    "ts-node": "^10.7.0"
   },
   "dependencies": {
     "cli-progress": "^3.11.0",
@@ -40,6 +42,7 @@
     "js-tokens": "^8.0.0",
     "random-seed": "^0.3.0",
     "ts-morph": "^14.0.0",
+    "typescript": "^4.7.3",
     "wtfnode": "^0.9.1"
   }
 }

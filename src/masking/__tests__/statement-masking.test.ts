@@ -1,4 +1,11 @@
-import { getFunctionBodyBounds, addMaskComments, removeComments } from '../statement-masking';
+import {
+  getFunctionBodyBounds,
+  addMaskComments,
+  removeComments,
+  groupTokens,
+  ModifiedToken,
+  isMaskableToken
+} from '../statement-masking';
 import tokenize, { Token } from 'js-tokens';
 
 const findMultilineComment = (tokens: Token[], comment: string) => {
@@ -68,3 +75,41 @@ describe('removeComments', () => {
     expect(removeComments('lets go /* 123 */ yea lets go')).toBe('lets go  yea lets go');
   });
 });
+
+describe('groupTokens', () => {
+  it('1', () => {
+    const tokens = [...tokenize('const x: number = 1')];
+    groupTokens(tokens);
+    expect(tokens.map(token => token.type)).toEqual<ModifiedToken["type"][]>(['IdentifierName', 'WhiteSpace', 'IdentifierName', 'PotentialType', 'Punctuator', 'WhiteSpace', 'NumericLiteral']);
+  })
+
+  it('2', () => {
+    const tokens = [...tokenize('const x: Record<string, number> = 1')];
+    groupTokens(tokens);
+    expect(tokens.map(token => token.type)).toEqual<ModifiedToken["type"][]>(['IdentifierName', 'WhiteSpace', 'IdentifierName', 'PotentialType', 'Punctuator', 'WhiteSpace', 'NumericLiteral']);
+  })
+
+  it('3', () => {
+    const a = 'const x = [1,2,3,4];';
+    const b = 'const x: number[] = [1,2,3,4];';
+    const at = [...tokenize(a)];
+    const bt = [...tokenize(b)];
+    groupTokens(at);
+    groupTokens(bt);
+    expect(at.filter(token => isMaskableToken(token))).toEqual(bt.filter(token => isMaskableToken(token)));
+  })
+
+  it('4', () => {
+    const a = 'const file: string = fs.readFileSync(path).toString();';
+    const t = [...tokenize(a)];
+    groupTokens(t);
+    expect(t.map(token => token.value).join('')).toEqual(a)
+  })
+
+  it('5', () => {
+    const a = 'console.log(...args);';
+    const t = [...tokenize(a)];
+    groupTokens(t);
+    expect(t.map(token => token.value).join('')).toEqual(a)
+  })
+})

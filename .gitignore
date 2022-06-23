@@ -1,7 +1,8 @@
-/data/*/
+/data
 /node_modules
 /dist
 */__pycache__
-/data/Evaluation.json
-/data/train.txt
-/results/**/*.bin
+*.zip
+*.bin
+/.idea
+/results*

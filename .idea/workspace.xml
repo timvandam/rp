@@ -4,9 +4,210 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2608a7e4-e958-4359-b453-3cadeb93dd38" name="Changes" comment="">
+    <list default="true" id="35e747c7-3a39-4c3d-b010-1b8cf1d0314e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/create-sets.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/evaluate.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/extract-functions.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/data-transformation.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/pre-process-fine-tune.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/py/incoder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/py/statistical-analysis.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/restructure.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/split-data/get-ts-files-recursively.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/type-explicitness/function-type-explicitness.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test-incoder.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test-unixcoder.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/train-unixcoder.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/rp.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/rp.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue-big-js-comments.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue-big-js-single.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue-big-js.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue-big-ts-comments.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue-big-ts-single.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue-big-ts.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blue.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/UniXcoder.zip" beforeDir="false" afterPath="$PROJECT_DIR$/data/functions-explicit.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js-no-comments.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/js-singleline-comments.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/py/evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/py/evaluate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-comments/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-comments/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-comments/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-comments/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-comments/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-comments/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-comments/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-comments/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-single/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-single/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-single/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-single/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-single/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-single/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-single/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big-single/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-big/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-comments/dev.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-comments/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-comments/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-comments/files.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-comments/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-comments/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-comments/test.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-comments/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-comments/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-comments/train.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-comments/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-comments/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-extra/dev.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-extra/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-extra/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-extra/files.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-extra/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-extra/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-extra/test.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-extra/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-extra/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-extra/train.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-extra/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-extra/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-jsdoc/dev.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-jsdoc/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-jsdoc/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-jsdoc/files.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-jsdoc/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-jsdoc/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-jsdoc/test.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-jsdoc/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-jsdoc/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-jsdoc/train.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-jsdoc/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-jsdoc/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-single/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-single/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-single/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-single/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-single/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-single/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-single/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js-single/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/js/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-comments/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-comments/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-comments/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-comments/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-comments/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-comments/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-comments/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-comments/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-single/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-single/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-single/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-single/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-single/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-single/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-single/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big-single/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-big/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-comments/dev.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-comments/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-comments/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-comments/files.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-comments/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-comments/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-comments/test.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-comments/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-comments/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-comments/train.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-comments/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-comments/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-extra/dev.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-extra/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-extra/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-extra/files.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-extra/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-extra/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-extra/test.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-extra/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-extra/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-extra/train.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-extra/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-extra/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-jsdoc/dev.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-jsdoc/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-jsdoc/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-jsdoc/files.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-jsdoc/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-jsdoc/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-jsdoc/test.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-jsdoc/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-jsdoc/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-jsdoc/train.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-jsdoc/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-jsdoc/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-single/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-single/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-single/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-single/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-single/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-single/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-single/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts-single/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts/dev_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts/dev_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts/postprocessed.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts/predictions.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts/test_js.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts/test_ts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts/train_js.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/results/ts/train_ts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/get-functions-explicit/master.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/get-functions-explicit/master.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/get-functions-explicit/worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/get-functions-explicit/worker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/get-functions/master.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/get-functions/master.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/get-functions/worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/get-functions/worker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/install-deps/install-deps.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/install-deps/install-deps.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/masking/__tests__/statement-masking.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/masking/__tests__/statement-masking.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/masking/statement-masking.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/masking/statement-masking.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/postprocessing/__tests__/count-types.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/postprocessing/__tests__/count-types.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/postprocessing/count-types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/type-explicitness/count-types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/postprocessing/postprocess.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/postprocessing/postprocess.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/preprocessing/preprocess.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/preprocessing/preprocess.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/split-data/split-data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/split-data/split-data.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/unixcoder/create-unixcoder-files.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/unixcoder/create-unixcoder-files.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ts-no-comments.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ts-singleline-comments.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +218,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -34,6 +236,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../anaconda3/lib/python3.9/site-packages/rouge_score/rouge_scorer.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/../anaconda3/lib/python3.9/site-packages/scipy/stats/stats.py" root0="SKIP_INSPECTION" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -42,81 +248,104 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowPanel.toolwindow.highlight.mappings&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowPanel.toolwindow.highlight.symlinks&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowPanel.toolwindow.show.date&quot;: &quot;false&quot;,
-    &quot;WebServerToolWindowPanel.toolwindow.show.permissions&quot;: &quot;false&quot;,
-    &quot;WebServerToolWindowPanel.toolwindow.show.size&quot;: &quot;false&quot;,
-    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;16.14.1&quot;,
-    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;16.11.39&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/tim/Downloads/new_ui_preview.jar&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;/home/tim/rp/node_modules/jest&quot;,
-    &quot;nodejs_interpreter_path&quot;: &quot;/home/tim/.nvm/versions/node/v16.14.1/bin/node&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/home/tim/rp/node_modules/prettier&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/home/tim/rp/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "true",
+    "WebServerToolWindowPanel.toolwindow.highlight.mappings": "true",
+    "WebServerToolWindowPanel.toolwindow.highlight.symlinks": "true",
+    "WebServerToolWindowPanel.toolwindow.show.date": "false",
+    "WebServerToolWindowPanel.toolwindow.show.permissions": "false",
+    "WebServerToolWindowPanel.toolwindow.show.size": "false",
+    "javascript.nodejs.core.library.configured.version": "16.14.1",
+    "javascript.nodejs.core.library.typings.version": "16.11.39",
+    "last_opened_file_path": "/home/tim/rp/data/models/UniXcoder-normal-js-all",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "/home/tim/rp/node_modules/jest",
+    "nodejs_interpreter_path": "/home/tim/.nvm/versions/node/v16.14.1/bin/node",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "/home/tim/rp/node_modules/prettier",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "ts.external.directory.path": "/home/tim/rp/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/results/ts-extra" />
+      <recent name="$PROJECT_DIR$/data/models/UniXcoder-normal-js-all" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/data" />
       <recent name="$PROJECT_DIR$/py" />
+      <recent name="$PROJECT_DIR$/src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/data/Functions_Inferred" />
+      <recent name="$PROJECT_DIR$/src/type-explicitness" />
       <recent name="$PROJECT_DIR$/src/evaluate" />
       <recent name="$PROJECT_DIR$/data/model/ts/saved_models" />
     </key>
+    <key name="es6.move.members.recent.items">
+      <recent name="$PROJECT_DIR$/src/split-data/get-function-files.ts" />
+    </key>
   </component>
-  <component name="RunManager" selected="Python.evaluate">
-    <configuration name="countTypes" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.statistical-analysis">
+    <configuration name="groupTokens" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
       <working-dir value="$PROJECT_DIR$" />
       <envs />
       <scope-kind value="SUITE" />
-      <test-file value="$PROJECT_DIR$/src/postprocessing/__tests__/postprocess.ts" />
+      <test-file value="$PROJECT_DIR$/src/masking/__tests__/statement-masking.test.ts" />
       <test-names>
-        <test-name value="countTypes" />
+        <test-name value="groupTokens" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="countTypes.countTypes: $name" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="groupTokens.3" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
       <working-dir value="$PROJECT_DIR$" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/src/postprocessing/__tests__/postprocess.ts" />
+      <test-file value="$PROJECT_DIR$/src/masking/__tests__/statement-masking.test.ts" />
       <test-names>
-        <test-name value="countTypes" />
-        <test-name value="countTypes: $name" />
+        <test-name value="groupTokens" />
+        <test-name value="3" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="parseFunction" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="groupTokens.4" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
       <working-dir value="$PROJECT_DIR$" />
       <envs />
-      <scope-kind value="SUITE" />
-      <test-file value="$PROJECT_DIR$/src/postprocessing/__tests__/parser.test.ts" />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/masking/__tests__/statement-masking.test.ts" />
       <test-names>
-        <test-name value="parseFunction" />
+        <test-name value="groupTokens" />
+        <test-name value="4" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="groupTokens.5" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/masking/__tests__/statement-masking.test.ts" />
+      <test-names>
+        <test-name value="groupTokens" />
+        <test-name value="5" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -142,48 +371,50 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="evaluate" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="evaluate" />
-      </scripts>
-      <node-interpreter value="$PROJECT_DIR$/../.nvm/versions/node/v16.14.1/bin/node" />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <configuration name="postprocess" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="postprocess" />
-      </scripts>
-      <node-interpreter value="$PROJECT_DIR$/../.nvm/versions/node/v16.14.1/bin/node" />
-      <envs />
+    <configuration name="statistical-analysis" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="rp" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/py/statistical-analysis.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Jest.parseFunction" />
-      <item itemvalue="Jest.countTypes" />
-      <item itemvalue="Jest.countTypes.countTypes: $name" />
-      <item itemvalue="npm.evaluate" />
-      <item itemvalue="npm.postprocess" />
+      <item itemvalue="Jest.groupTokens" />
+      <item itemvalue="Jest.groupTokens.3" />
+      <item itemvalue="Jest.groupTokens.4" />
+      <item itemvalue="Jest.groupTokens.5" />
       <item itemvalue="Python.evaluate" />
+      <item itemvalue="Python.statistical-analysis" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.evaluate" />
-        <item itemvalue="Jest.parseFunction" />
-        <item itemvalue="Jest.countTypes" />
-        <item itemvalue="Jest.countTypes.countTypes: $name" />
-        <item itemvalue="npm.postprocess" />
+        <item itemvalue="Python.statistical-analysis" />
+        <item itemvalue="Jest.groupTokens.5" />
+        <item itemvalue="Jest.groupTokens.4" />
+        <item itemvalue="Jest.groupTokens.3" />
+        <item itemvalue="Jest.groupTokens" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="2608a7e4-e958-4359-b453-3cadeb93dd38" name="Changes" comment="" />
+      <changelist id="35e747c7-3a39-4c3d-b010-1b8cf1d0314e" name="Changes" comment="" />
       <created>1653994986699</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -237,6 +468,21 @@
       <workItem from="1654869136722" duration="5459000" />
       <workItem from="1655120587461" duration="3104000" />
       <workItem from="1655195247623" duration="139000" />
+      <workItem from="1655218430338" duration="3445000" />
+      <workItem from="1655224079087" duration="1090000" />
+      <workItem from="1655225930239" duration="5049000" />
+      <workItem from="1655274756463" duration="11415000" />
+      <workItem from="1655293782804" duration="3076000" />
+      <workItem from="1655345563668" duration="7175000" />
+      <workItem from="1655416800712" duration="4781000" />
+      <workItem from="1655545684480" duration="1056000" />
+      <workItem from="1655736688123" duration="3359000" />
+      <workItem from="1655740121803" duration="3414000" />
+      <workItem from="1655743543931" duration="11539000" />
+      <workItem from="1655804211430" duration="42713000" />
+      <workItem from="1655901590628" duration="2892000" />
+      <workItem from="1655906195492" duration="17274000" />
+      <workItem from="1655936398747" duration="87000" />
     </task>
     <servers />
   </component>
@@ -244,7 +490,9 @@
     <option name="version" value="3" />
     <option name="includedJSSourcePackages">
       <set>
+        <option value="@ts-morph/common" />
         <option value="ts-morph" />
+        <option value="typescript" />
       </set>
     </option>
   </component>
@@ -264,6 +512,7 @@
     <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/rp$evaluate.coverage" NAME="evaluate Coverage Results" MODIFIED="1655195343947" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/rp$autorank_analysis.coverage" NAME="autorank-analysis Coverage Results" MODIFIED="1655989749877" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/" />
+    <SUITE FILE_PATH="coverage/rp$evaluate.coverage" NAME="evaluate Coverage Results" MODIFIED="1655972382651" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

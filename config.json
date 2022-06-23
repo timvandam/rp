@@ -1,14 +1,10 @@
 {
-  "REPOS_FOLDER": "./data/Repos",
-  "FUNCTIONS_FOLDER": "./data/Functions",
-  "UNIXCODER_FOLDER": "./data/UniXcoder",
-  "RESULTS_FOLDER": "./results",
   "ALLOWED_CPUS": 0.8,
   "LINE_MASK_CHANCE": 0.2,
   "DATASET_SPLIT": {
-    "TRAIN": 0.75,
-    "TEST": 0.2,
-    "DEV": 0.05
+    "TRAIN": 0.80,
+    "TEST": 0.10,
+    "DEV": 0.10
   },
   "RANDOM_SEED": 42
 }

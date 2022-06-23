@@ -1,11 +1,17 @@
 import { findFoldersAtDepth } from '../file-utils';
 import { exec } from 'child_process';
-import { REPOS_FOLDER } from '../config';
 import path from 'path';
 import { collect, enumerate } from '../utils';
 
+const folder = process.argv[2];
+
+if (typeof folder !== 'string') {
+  console.log('You must provide a folder to install dependencies in')
+  process.exit(1);
+}
+
 async function installDependencies() {
-  const repos = await collect(findFoldersAtDepth(REPOS_FOLDER, 2));
+  const repos = await collect(findFoldersAtDepth(folder, 2));
   for await (const [i, repoPath] of enumerate(repos)) {
     console.log(
       `${i + 1} / ${repos.length}\t| Installing dependencies for ${path
