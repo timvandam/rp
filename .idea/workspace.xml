@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="35e747c7-3a39-4c3d-b010-1b8cf1d0314e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/type-explicitness/function-type-explicitness.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/type-explicitness/function-type-explicitness.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/split-data/get-ts-files-recursively.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/split-data/get-ts-files-recursively.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test-incoder.sh" beforeDir="false" afterPath="$PROJECT_DIR$/test-incoder.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train-unixcoder.sh" beforeDir="false" afterPath="$PROJECT_DIR$/train-unixcoder.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

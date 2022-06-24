@@ -33,7 +33,7 @@ for t in "${TYPE[@]}"; do
 
       UNIXCODER_FOLDER_NAME="UniXcoder-$t-$l-$c"
       SETS_FOLDER="$FOLDER/sets/$UNIXCODER_FOLDER_NAME"
-      TRAIN_FILE_PATH="$SETS_FOLDER/train.json"
+      TRAIN_FILE_PATH="$SETS_FOLDER/train.txt"
       VALIDATION_FILE_PATH="$SETS_FOLDER/dev.json"
       OUTPUT_FOLDER_PATH="$FOLDER/models/$UNIXCODER_FOLDER_NAME"
 

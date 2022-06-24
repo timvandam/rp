@@ -34,7 +34,7 @@ for t in "${TYPE[@]}"; do
       INCODER_FOLDER_NAME="InCoder-$t-$l-$c"
       SETS_FOLDER="$FOLDER/sets/$INCODER_FOLDER_NAME"
       TEST_FILE_PATH="$SETS_FOLDER/test.json"
-      OUTPUT_FOLDER_PATH="$FOLDER/models/$UNIXCODER_FOLDER_NAME"
+      OUTPUT_FOLDER_PATH="$FOLDER/models/$INCODER_FOLDER_NAME"
 
       python py/incoder.py "$TEST_FILE_PATH" "$OUTPUT_FOLDER_PATH"
     done

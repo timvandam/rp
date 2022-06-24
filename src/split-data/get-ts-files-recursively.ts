@@ -6,7 +6,7 @@ export async function* getTsFilesRecursively(folder: string): AsyncIterable<stri
     const spawned = spawn(
         'find',
         [
-            path.resolve(folder),
+            `"${path.resolve(folder)}"`,
             '-type',
             'f',
             '-name',
